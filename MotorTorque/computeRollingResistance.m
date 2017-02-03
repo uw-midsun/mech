@@ -21,5 +21,5 @@
 
 function rollingResistance = computeRollingResistance(Cr, M, v)
     g = 9.81; % acceleration of gravity 
-    rollingResistance = Cr.*g.*M.*(1+0.00173.*v);
+    rollingResistance = Cr.*g.*M.*(1+0.02236.*v);
 end
