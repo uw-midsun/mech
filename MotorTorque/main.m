@@ -24,11 +24,11 @@ close all;
 
 % ------------------------------ Constants ---------------------------- %
 
-M = 600;        % Car mass (kg)
-r = 0.27;       % Wheel radius (m)
+M = 450;        % Car mass (kg)
+r = 0.267;       % Wheel radius (m)
 Cr = 0.0055;    % Rolling resistance coefficient - Winning Solar Car pg 18
-A = 0.24;          % Frontal area (m^2)
-Cd = 0.25;      % Drag coefficient - from Ron's preliminary CFD findings
+A = 1;          % Frontal area (m^2)
+Cd = 0.142;      % Drag coefficient - from Ron's preliminary CFD findings
 rho = 1.225;    % Density of air (kg/m^3)
 g = 9.81;       % Acceleration of gravity (m/s^2)
 
@@ -36,17 +36,18 @@ g = 9.81;       % Acceleration of gravity (m/s^2)
 
 a = [0:.5:2.5];                      % Acceleration in m/s^2
 v = [0:.1:33.33];                    % Velocity in m/s
-incline = [0, 5, 10, 15];            % Incline in %
+incline = [0, 5];            % Incline in %
 theta = atan(incline/100);           % Incline in rad
 
 % ---------------------------- Plot Results ---------------------------- %
 
 figure;
+
 for i = 1:length(theta)
-    subplot(1,4,i);
+    subplot(1,length(theta),i);
     hold on;
     for j = 1:length(a)
-        torque = 0.5.*r.*(M.*a(j) + M.*g.*sin(theta(i))...
+        torque = 0.5*r.*(M.*a(j) + M.*g.*sin(theta(i))...
                  + computeRollingResistance(Cr, M, v)...
                  + computeDrag(rho, v, Cd, A)); 
         plot(v,torque,'DisplayName', sprintf('%0.5g m/s^2',a(j)));
@@ -58,6 +59,7 @@ for i = 1:length(theta)
     grid on;
 end
 legend('show');
+
 
 % --------------------- Plot Cornering Results ------------------------ %
 

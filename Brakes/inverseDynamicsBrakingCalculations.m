@@ -25,7 +25,7 @@ clear all
 % --------------------------- Constants ------------------------------- %
 
 m = 611;            % car mass in kg
-cogX = 0.8;         % Center of gravity position in longitudinal direction
+cogZ = 0.8;         % Center of gravity position in longitudinal direction
 cogY = 0.5;         % Center of gravity position in vertical direction
 wheelbase = 1.78;   % Wheelbase in m
 g = -9.81;          % Acceleration of gravity (m/s^2)
@@ -56,7 +56,7 @@ brakePedalReduction = 3; % 3:1 mechanical advantage on brake pedal
 
 A = [1 1 0 0;
      0 0 1 1
-     cogY cogY -cogX (wheelbase-cogX)
+     cogY cogY -cogZ (wheelbase-cogZ)
      1 0 -muRoad 0]
  
 b = [m*a/2; -m*g/2; 0; 0];
