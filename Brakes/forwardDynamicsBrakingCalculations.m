@@ -33,16 +33,16 @@ clear all
 % --------------------------- Constants ------------------------------- %
 
 m = 611;            % car mass in kg
-cogZ = 0.8;         % Center of gravity position in longitudinal direction
+cogZ = 1.2;         % Center of gravity position in longitudinal direction
 cogY = 0.5;         % Center of gravity position in vertical direction
 wheelbase = 1.78;   % Wheelbase in m
 g = -9.81;          % Acceleration of gravity (m/s^2)
-muBrakePad = [0.2, 0.35];  % Coefficient of friction between the tire and road [dynamic, static]
-muRoad = [0.5, 0.6];       % Coefficient of friction between the tire and road [dynamic, static]
+muBrakePad = [0.35, 0.4];  % Coefficient of friction between the tire and road [dynamic, static]
+muRoad = [0.6, 0.7];       % Coefficient of friction between the tire and road [dynamic, static]
 dynamic = 1; % Constant to increase code readabliltiy 
 static = 2; % Constant to increase code readabliltiy 
 wheelDiam = 0.533;  % Wheel Diameter in m
-rotorDiam = [.18, .2];    % Rotor diameter at center of brake pad [front, rear]
+rotorDiam = [.18, .3];    % Rotor diameter at center of brake pad [front, rear]
 padContactArea = 0.00129; % Caliper Contact area in m^2 http://www.wilwood.com/BrakePads/BrakePadsProd.aspx?itemno=150-4091K
 caliperCylinderArea = 0.001; % Area of caliper cylinder 
 masterCylinderArea = 0.001; % Area of master cylinder 
@@ -50,7 +50,7 @@ brakePedalReduction = 3; % 3:1 mechanical advantage on brake pedal
 
 % --------------------------- Variables ------------------------------- %
 
-frontPressureRange = 5e5:5e5:50e6;
+frontPressureRange = 5e5:5e5:20e6;
 pressureRatioRange = 0:.05:1;
 
 [frontPressure, pressureRatio] = meshgrid(frontPressureRange, pressureRatioRange);
@@ -61,6 +61,7 @@ pressureRatioRange = 0:.05:1;
 a = zeros(length(pressureRatioRange),length(frontPressureRange));
 weightBalance = a; 
 sliding = a;
+rearForce = a; 
 
 for i = 1:length(pressureRatioRange)
     for j = 1:length(frontPressureRange)
@@ -97,6 +98,7 @@ for i = 1:length(pressureRatioRange)
         % Save results
         a(i,j) = accel; 
         weightBalance(i,j) = (normalForce(1)/(sum(normalForce)));
+        rearForce(i,j) = normalForce(2);
     end
 end
 
