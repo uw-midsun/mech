@@ -25,10 +25,10 @@ close all;
 % ------------------------------ Constants ---------------------------- %
 
 M = 450;        % Car mass (kg)
-r = 0.267;       % Wheel radius (m)
+r = 0.267;      % Wheel radius (m)
 Cr = 0.0055;    % Rolling resistance coefficient - Winning Solar Car pg 18
-A = 1;          % Frontal area (m^2)
-Cd = 0.142;      % Drag coefficient - from Ron's preliminary CFD findings
+A = 1.8;        % Frontal area (m^2)
+Cd = 0.16;      % Drag coefficient - from Ron's preliminary CFD findings
 rho = 1.225;    % Density of air (kg/m^3)
 g = 9.81;       % Acceleration of gravity (m/s^2)
 
@@ -36,7 +36,7 @@ g = 9.81;       % Acceleration of gravity (m/s^2)
 
 a = [0:.5:2.5];                      % Acceleration in m/s^2
 v = [0:.1:33.33];                    % Velocity in m/s
-incline = [0, 5];            % Incline in %
+incline = [0, 5,10];            % Incline in %
 theta = atan(incline/100);           % Incline in rad
 
 % ---------------------------- Plot Results ---------------------------- %

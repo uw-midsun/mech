@@ -32,10 +32,10 @@ clear all
 
 % --------------------------- Constants ------------------------------- %
 
-m = 611;            % car mass in kg
-cogZ = 1.2;         % Center of gravity position in longitudinal direction
-cogY = 0.5;         % Center of gravity position in vertical direction
-wheelbase = 1.78;   % Wheelbase in m
+m = 550;            % car mass in kg
+cogZ = 1.52;         % Center of gravity position in longitudinal direction (wrt global origin)
+cogY = 0.52;         % Center of gravity position in vertical direction (wrt global origin)
+wheelbase = 2.6;   % Wheelbase in m
 g = -9.81;          % Acceleration of gravity (m/s^2)
 muBrakePad = [0.35, 0.4];  % Coefficient of friction between the tire and road [dynamic, static]
 muRoad = [0.6, 0.7];       % Coefficient of friction between the tire and road [dynamic, static]
