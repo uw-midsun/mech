@@ -20,8 +20,8 @@ load_system('halfCarModel');
 
 c1_ = 0;     % Front damping coefficient (Ns/m)
 c2_ = 0;     % Rear damping coefficient (Ns/m) 
-k1_ = 51993;    % Front sring rate (N/m) 
-k2_ = 51993;    % Rear sring rate (N/m)
+k1_ = 50000;    % Front sring rate (N/m) 
+k2_ = 50000;    % Rear sring rate (N/m)
 m_ = 500;       % Mass of the vehicle (kg)
 I_ = 550;       % Moment of interial about global x axis (kg*m^2)
 a_ = 1.3;       % Distance from COG to front tire (m)
@@ -77,6 +77,38 @@ input = (amplitude*wb)/(s^2+wb^2); % Laplace transform of input L{A*sin(wb*t))}
 simplifiedH1 = subs(H1, {c1 c2 m I a b}, {0 0 m_ I_ a_ b_});
 simplifiedH2 = subs(H2, {c1 c2 m I a b}, {0 0 m_ I_ a_ b_});
 
+
+%%%% testing %%%%
+
+newH1 = subs(simplifiedH1,{k1 k2},{k1_ k2_});
+newH2 = subs(simplifiedH2,{k1 k2},{k1_ k2_});
+xLaplace = simplify(newH1(1)*input + newH2(1)*phaseshift*input);
+[xLaplaceNum, xLaplaceDenom] = numden(xLaplace);
+harmonics = unique(abs(imag(double(solve(xLaplaceDenom, s)))));
+
+Fs = 200; % sampling frequency in Hz
+T = 1/Fs; % sampling period
+t_ = 0:T:5; % time values 0 to 5 seconds
+L = length(t_);
+
+x = ilaplace(simplifiedH1(1)*input) + ilaplace(simplifiedH2(1)*phaseshift*input);
+xWithSpring = subs(x,{k1 k2},{k1_ k2_});
+
+% Compute response in the time domain
+xResponse = double(subs(xWithSpring,t,t_));
+
+% Compute the first harmonic of the displacement
+fftOut = fft(xResponse);
+p2 = abs(fftOut/L);
+p1 = p2(1:L/2+1);
+p1(2:end-1) = 2*p1(2:end-1);
+f = Fs*(0:(L/2))/L;
+plot(f,p1);
+[magnitude, harmonicIndex] = max(p1);
+xHarmonicFrequency = f(harmonicIndex);
+xHarmonicMagnitude = magnitude;
+%%%% testing %%%%        
+
 x = ilaplace(simplifiedH1(1)*input) + ilaplace(simplifiedH2(1)*phaseshift*input);
 pitch = ilaplace(simplifiedH1(2)*input) + ilaplace(simplifiedH2(2)*phaseshift*input);
 
@@ -86,46 +118,55 @@ t_ = 0:T:5; % time values 0 to 5 seconds
 L = length(t_);
 
 % Spring rates to test:
-springRateOptions = (25000:5000:115000); % N/m
+springRateOptions = (25000:10000:115000); % N/m
 [k1Options, k2Options] = meshgrid(springRateOptions, springRateOptions);
 
 % Preallocate outputs:
-pitchHarmonic = zeros(size(k2Options));
-xHarmonic = pitchHarmonic;
+% pitchHarmonicFrequency = zeros(size(k2Options));
+% xHarmonicFrequency = pitchHarmonicFrequency;
+% pitchHarmonicMagnitude = pitchHarmonicFrequency;
+% xHarmonicMagnitude = pitchHarmonicFrequency;
 
-for i = 1:size(k1Options,1)
-    for j = 1:size(k1Options,2)     
-        xWithSpring = subs(x,{k1 k2},{k1Options(i,j) k2Options(i,j)});
-        pitchWithSpring = subs(pitch,{k1 k2},{k1Options(i,j) k2Options(i,j)});
-        
-        % Compute response in the time domain
-        xResponse = double(subs(xWithSpring,t,t_));
-        pitchResponse = double(subs(pitchWithSpring,t,t_));
-        
-        % Compute the first harmonic of the displacement
-        fftOut = fft(xResponse);
-        p2 = abs(fftOut/L);
-        p1 = p2(1:L/2+1);
-        p1(2:end-1) = 2*p1(2:end-1);
-        f = Fs*(0:(L/2))/L;
-        [~, harmonicIndex] = max(p1);
-        xHarmonic(i,j) = f(harmonicIndex);
-        
-        % Compute the first harmonic of the pitch
-        fftOut = fft(pitchResponse);
-        p2 = abs(fftOut/L);
-        p1 = p2(1:L/2+1);
-        p1(2:end-1) = 2*p1(2:end-1);
-        f = Fs*(0:(L/2))/L;
-        [~, harmonicIndex] = max(p1);
-        pitchHarmonic(i,j) = f(harmonicIndex);
-    end
-end
-
-figure;
-surf(k1Options, k2Options, xHarmonic);
-figure;
-surf(k1Options, k2Options, pitchHarmonic);
+% for i = 1:size(k1Options,1)
+%     for j = 1:size(k1Options,2)     
+%         xWithSpring = subs(x,{k1 k2},{k1Options(i,j) k2Options(i,j)});
+%         pitchWithSpring = subs(pitch,{k1 k2},{k1Options(i,j) k2Options(i,j)});
+%         
+%         % Compute response in the time domain
+%         xResponse = double(subs(xWithSpring,t,t_));
+%         pitchResponse = double(subs(pitchWithSpring,t,t_));
+%         
+%         % Compute the first harmonic of the displacement
+%         fftOut = fft(xResponse);
+%         p2 = abs(fftOut/L);
+%         p1 = p2(1:L/2+1);
+%         p1(2:end-1) = 2*p1(2:end-1);
+%         f = Fs*(0:(L/2))/L;
+%         [magnitude, harmonicIndex] = max(p1);
+%         xHarmonicFrequency(i,j) = f(harmonicIndex);
+%         xHarmonicMagnitude(i,j) = magnitude;
+%         
+%         % Compute the first harmonic of the pitch
+%         fftOut = fft(pitchResponse);
+%         p2 = abs(fftOut/L);
+%         p1 = p2(1:L/2+1);
+%         p1(2:end-1) = 2*p1(2:end-1);
+%         f = Fs*(0:(L/2))/L;
+%         [magnitude, harmonicIndex] = max(p1);
+%         pitchHarmonicFrequency(i,j) = f(harmonicIndex);
+%         pitchHarmonicMagnitude(i,j) = magnitude;
+% 
+%     end
+% end
+% 
+% figure;
+% surf(k1Options, k2Options, xHarmonicFrequency);
+% figure;
+% surf(k1Options, k2Options, pitchHarmonicFrequency);
+% figure;
+% surf(k1Options, k2Options, xHarmonicMagnitude);
+% figure;
+% surf(k1Options, k2Options, pitchHarmonicMagnitude);
 
 % ------------------------------- Simulink ----------------------------- %
 
