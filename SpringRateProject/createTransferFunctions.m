@@ -18,19 +18,32 @@ load_system('halfCarModel');
 
 % ----------------------------- Constants ------------------------------ %
 
-c1_ = 1500;     % Front damping coefficient (Ns/m)
-c2_ = 1600;     % Rear damping coefficient (Ns/m) 
+c1_ = 0;     % Front damping coefficient (Ns/m)
+c2_ = 0;     % Rear damping coefficient (Ns/m) 
 k1_ = 51993;    % Front sring rate (N/m) 
-k2_ = 30000;    % Rear sring rate (N/m)
+k2_ = 51993;    % Rear sring rate (N/m)
 m_ = 500;       % Mass of the vehicle (kg)
 I_ = 550;       % Moment of interial about global x axis (kg*m^2)
 a_ = 1.3;       % Distance from COG to front tire (m)
 b_ = 1.3;       % Distance from COG to rear tire (m)
-speed_ = 22.2;  % Cruising speed (m/s)
 
+% ---------------------- Forcing Function Parameters ------------------- %
+
+amplitude = 0.015;              % Amplitude of bumps on road surface
+bumpSparation = 2;              % Distance between peaks on the road surface (m)
+speed = 22.2;                   % Cruising speed (m/s)
+wb = 2*pi*speed/bumpSparation;  % Frequency of base excitation (rad/sec)
+timeDelay = (a_+b_)/speed;        % delay between input striking front and
+                                % rear wheels (s)
+                                
+% Update simulink parameters
+set_param('halfCarModel/Road','Frequency',mat2str(wb),'Amplitude',mat2str(amplitude));
+set_param('halfCarModel/DelayA','DelayTime',mat2str(timeDelay));
+set_param('halfCarModel/DelayB','DelayTime',mat2str(timeDelay));
+                              
 % ----------------- Create Symbolic Transfer Functions ----------------- %
 
-syms s c1 c2 k1 k2 m I a b t0 
+syms t s c1 c2 k1 k2 m I a b t0 A w0 
 
 QA1 = m*s^2 + (c1+c2)*s + (k1+k2); % X terms of ODE (A) 
 QA2 = (b*c2-a*c1)*s + (b*k2-a*k1); % Theta terms of ODE (A)
@@ -41,8 +54,6 @@ PA1 = (c1*s+k1); % Time shifted componet of P for ODE (A) (front tire)
 PA2 = (c2*s+k2); % Non time shifted componet of P for ODE (A) (rear tire)
 PB1 = (-a*c1*s-a*k1); % Time shifted componet of P for ODE (B) (front tire)
 PB2 = (b*c2*s+b*k2); % % Non time shifted componet of P for ODE (B) (rear tire)
-
-% timeshift = exp(-s*t0); % Time shift to be applied to P_1
 
 % Create linear systems in to solve for transfer functions
 
@@ -57,7 +68,66 @@ P2 = [PA2;
 H1 = linsolve(Q,P1);
 H2 = linsolve(Q,P2);
 
-% -------- Substitue constants to obtain numerial coefficients --------- %
+% Input in frequency domain
+phaseshift = exp(-s*timeDelay); % Time shift to be applied to P_2
+input = (amplitude*wb)/(s^2+wb^2); % Laplace transform of input L{A*sin(wb*t))}
+
+% -------------- Solve for response with zero damping ------------------ %
+
+simplifiedH1 = subs(H1, {c1 c2 m I a b}, {0 0 m_ I_ a_ b_});
+simplifiedH2 = subs(H2, {c1 c2 m I a b}, {0 0 m_ I_ a_ b_});
+
+x = ilaplace(simplifiedH1(1)*input) + ilaplace(simplifiedH2(1)*phaseshift*input);
+pitch = ilaplace(simplifiedH1(2)*input) + ilaplace(simplifiedH2(2)*phaseshift*input);
+
+Fs = 200; % sampling frequency in Hz
+T = 1/Fs; % sampling period
+t_ = 0:T:5; % time values 0 to 5 seconds
+L = length(t_);
+
+% Spring rates to test:
+springRateOptions = (25000:5000:115000); % N/m
+[k1Options, k2Options] = meshgrid(springRateOptions, springRateOptions);
+
+% Preallocate outputs:
+pitchHarmonic = zeros(size(k2Options));
+xHarmonic = pitchHarmonic;
+
+for i = 1:size(k1Options,1)
+    for j = 1:size(k1Options,2)     
+        xWithSpring = subs(x,{k1 k2},{k1Options(i,j) k2Options(i,j)});
+        pitchWithSpring = subs(pitch,{k1 k2},{k1Options(i,j) k2Options(i,j)});
+        
+        % Compute response in the time domain
+        xResponse = double(subs(xWithSpring,t,t_));
+        pitchResponse = double(subs(pitchWithSpring,t,t_));
+        
+        % Compute the first harmonic of the displacement
+        fftOut = fft(xResponse);
+        p2 = abs(fftOut/L);
+        p1 = p2(1:L/2+1);
+        p1(2:end-1) = 2*p1(2:end-1);
+        f = Fs*(0:(L/2))/L;
+        [~, harmonicIndex] = max(p1);
+        xHarmonic(i,j) = f(harmonicIndex);
+        
+        % Compute the first harmonic of the pitch
+        fftOut = fft(pitchResponse);
+        p2 = abs(fftOut/L);
+        p1 = p2(1:L/2+1);
+        p1(2:end-1) = 2*p1(2:end-1);
+        f = Fs*(0:(L/2))/L;
+        [~, harmonicIndex] = max(p1);
+        pitchHarmonic(i,j) = f(harmonicIndex);
+    end
+end
+
+figure;
+surf(k1Options, k2Options, xHarmonic);
+figure;
+surf(k1Options, k2Options, pitchHarmonic);
+
+% ------------------------------- Simulink ----------------------------- %
 
 numericalH1 = subs(H1, {c1 c2 k1 k2 m I a b}, {c1_ c2_ k1_ k2_ m_ I_ a_ b_});
 numericalH2 = subs(H2, {c1 c2 k1 k2 m I a b}, {c1_ c2_ k1_ k2_ m_ I_ a_ b_});
@@ -80,4 +150,7 @@ set_param('halfCarModel/HB1','Numerator',mat2str(sym2poly(numH1(2)))...
 transFuncB2 = tf(sym2poly(numH2(2)),sym2poly(denomH2(2)));
 set_param('halfCarModel/HB2','Numerator',mat2str(sym2poly(numH2(2)))...
                             ,'Denominator',mat2str(sym2poly(denomH2(2))));
-                        
+
+% --------------- Solving for natural resonance frequency -------------- %
+
+
