@@ -19,14 +19,14 @@ close all;
 
 % ----------------------------- Constants ------------------------------ %
 
-c1_ = 5000;     % Front damping coefficient (Ns/m)
-c2_ = 5000;     % Rear damping coefficient (Ns/m) 
-k1_ = 50000;    % Front sring rate (N/m) 
-k2_ = 60000;    % Rear sring rate (N/m)
-m_ = 500;       % Mass of the vehicle (kg)
+c1_ = 9670;     % Front damping coefficient (Ns/m)
+c2_ = 9670;     % Rear damping coefficient (Ns/m) 
+k1_ = 650*175.1;    % Front sring rate (N/m) 
+k2_ = 550*175.1;    % Rear sring rate (N/m)
+m_ = 550;       % Mass of the vehicle (kg)
 I_ = 550;       % Moment of interial about global x axis (kg*m^2)
-a_ = 1.2;       % Distance from COG to front tire (m)
-b_ = 1.4;       % Distance from COG to rear tire (m)
+a_ = 1.3;       % Distance from COG to front tire (m)
+b_ = 1.3;       % Distance from COG to rear tire (m)
 
 % ---------------------- Forcing Function Parameters ------------------- %
 
@@ -44,7 +44,7 @@ set_param('halfCarModel/DelayB','DelayTime',mat2str(timeDelay));
                               
 % ----------------- Create Symbolic Transfer Functions ----------------- %
 
-syms t s c1 c2 k1 k2 m I a b t0 A w0 
+syms t s c1 c2 k1 k2 m I a b t0 A w0 c k 
 
 QA1 = m*s^2 + (c1+c2)*s + (k1+k2); % X terms of ODE (A) 
 QA2 = (b*c2-a*c1)*s + (b*k2-a*k1); % Theta terms of ODE (A)
@@ -70,14 +70,14 @@ H1 = linsolve(Q,P1);
 H2 = linsolve(Q,P2);
 
 % Input in frequency domain
-phaseshift = exp(-s*timeDelay); % Time shift to be applied to P_2
+phaseShift = exp(-s*timeDelay); % Time shift to be applied to P_2
 input = (amplitude*wb)/(s^2+wb^2); % Laplace transform of input L{A*sin(wb*t))}
 
-% -------------- Solve for response with zero damping ------------------ %
+% -------------------------- Solve for response  ----------------------- %
 
-simplifiedH1 = simplify(collect(subs(H1, {k1 k2 c1 c2 m I a b}, {k1_ k2_ 0 0 m_ I_ a_ b_})));
-simplifiedH2 = simplify(collect(subs(H2, {k1 k2 c1 c2 m I a b}, {k1_ k2_ 0 0 m_ I_ a_ b_})));
-impulseResponse = vpa(simplify(ilaplace(simplifiedH1) + ilaplace(simplifiedH2*phaseshift)),3);
+simplifiedH1 = simplify(collect(subs(H1, {k1 k2 c1 c2 m I a b}, {k1_ k2_ c_1 c_2 m_ I_ a_ b_})));
+simplifiedH2 = simplify(collect(subs(H2, {k1 k2 c1 c2 m I a b}, {k1_ k2_ c_1 c_2 m_ I_ a_ b_})));
+impulseResponse = vpa(simplify(ilaplace(simplifiedH1) + ilaplace(simplifiedH2*phaseShift)),3);
 
 Fs = 200; % sampling frequency in Hz
 T = 1/Fs; % sampling period
@@ -95,7 +95,7 @@ plot(t_,numericalImpulseResponse(2,:).*(180/pi),'DisplayName','\theta');
 ylabel('Angular Displacement (deg)');
 xlabel('Time (s)');
 xlim([0 3]);
-title('Impusle Response with Zero Damping');
+title('Impusle Response');
 legend show;
 saveas(gcf,'impResp','png');
 
@@ -130,11 +130,11 @@ simplifiedH2 = simplify(collect(subs(H2, {k1 k2 m I a b}, {k1_ k2_ m_ I_ a_ b_})
 
 Fs = 100; % sampling frequency in Hz
 T = 1/Fs; % sampling period
-t_ = 0:T:5; % time values 0 to 5 seconds
+t_ = 0:T:3; % time values 0 to 5 seconds
 L = length(t_);
 
 % Spring rates to test:
-dampingOptions = (3000:2000:5000); % N/m
+dampingOptions = (100000:500:100000); % N/m
 [c1Options, c2Options] = meshgrid(dampingOptions, dampingOptions);
 
 % Preallocate outputs:
@@ -146,33 +146,28 @@ for i = 1:size(c1Options,1)
         
         x1 = subs(simplify(collect(simplifiedH1(1))),{c1 c2},{c1Options(i,j) c2Options(i,j)});
         x2 = subs(simplify(collect(simplifiedH2(1))),{c1 c2},{c1Options(i,j) c2Options(i,j)});
-        xWithSpring = vpa(simplify(simplify(ilaplace(simplify(x1))) + simplify(ilaplace(simplify(x2)))),3);
+        xWithSpring = vpa(simplify(simplify(ilaplace(simplify(x1.*(0.025/s)))) + simplify(ilaplace(simplify(x2.*(0.025/s))))),3);
         
         pitch1 = subs(simplify(collect(simplifiedH1(2))),{c1 c2},{c1Options(i,j) c2Options(i,j)});
         pitch2 = subs(simplify(collect(simplifiedH2(2))),{c1 c2},{c1Options(i,j) c2Options(i,j)});
-        pitchWithSpring = vpa(simplify(simplify(ilaplace(simplify(pitch1))) + simplify(ilaplace(simplify(pitch2)))),3);
+        pitchWithSpring = vpa(simplify(simplify(ilaplace(simplify(pitch1.*(0.025/s)))) + simplify(ilaplace(simplify(pitch2.*(0.025/s).*phaseShift)))),3);
                 
         % Compute response in the time domain
         xResponse = double(subs(xWithSpring,t,t_));
         pitchResponse = double(subs(pitchWithSpring,t,t_));
         
         % Record settling time
-        xStepInfo = stepinfo(xResponse,t_,0);
+        xStepInfo = stepinfo(xResponse,t_,0.025);
         pitchStepInfo = stepinfo(pitchResponse,t_,0);
         xSettlingTime(i,j) = xStepInfo.SettlingTime;
         pitchSettlingTime(i,j) = pitchStepInfo.SettlingTime;
-
-        figure;
-        hold on;
-        plot(t_,xResponse);
-        plot(t_,pitchResponse);
     end
 end
 
 figure;
-surf(c1Options, c2Options, xSettlingTime);
+surf(c1Options, c2Options, real(xSettlingTime));
 figure;
-surf(c1Options, c2Options, pitchSettlingTime);
+surf(c1Options, c2Options, real(pitchSettlingTime));
 
 
 % % --- Plot Magnitude of First Harmonic as a Funciton of Spring Rates --- %

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  3 APR 2017 18:51
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  4 APR 2017 19:18
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -488,6 +488,10 @@ Package csquotes Info: Redefining alias 'english' -> 'english/american'.
 \f@ncyO@erf=\skip68
 \f@ncyO@olf=\skip69
 \f@ncyO@orf=\skip70
+) (/usr/local/texlive/2015/texmf-dist/tex/latex/cite/cite.sty
+LaTeX Info: Redefining \cite on input line 302.
+LaTeX Info: Redefining \nocite on input line 332.
+Package: cite 2015/02/27  v 5.5
 )
 Package csquotes Info: Allocating character ".
 Package csquotes Info: Checking for multilingual support...
@@ -495,36 +499,33 @@ Package csquotes Info: ... none found.
 
 
 Package csquotes Warning: No multilingual support.
-(csquotes)                Cannot enable multilingual quotes on input line 30.
+(csquotes)                Cannot enable multilingual quotes on input line 31.
 
 (/Users/Devon/Documents/Waterloo/midSun/MechGitRepo/SpringRateProject/.texpadtmp/MSXII Supsension Parameters.aux
 
 LaTeX Warning: Label `eq:matrix1' multiply defined.
 
-
-LaTeX Warning: Label `fig:impResp' multiply defined.
-
 )
 \openout1 = `"MSXII Supsension Parameters.aux"'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 30.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 30.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 31.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 31.
  (/usr/local/texlive/2015/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    ... okay on input line 31.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -610,36 +611,37 @@ Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
 \c@lstlisting=\count161
-Package csquotes Info: Making character " active on input line 30.
+Package csquotes Info: Making character " active on input line 31.
  <./LaTex/midnightSunLogoCircle.png, id=1, 501.875pt x 501.875pt>
 File: ./LaTex/midnightSunLogoCircle.png Graphic file (type png)
  <use ./LaTex/midnightSunLogoCircle.png>
-Package pdftex.def Info: ./LaTex/midnightSunLogoCircle.png used on input line 36.
-(pdftex.def)             Requested size: 98.28552pt x 98.28258pt.
+Package pdftex.def Info: ./LaTex/midnightSunLogoCircle.png used on input line 37.
+(pdftex.def)             Requested size: 122.85878pt x 122.85706pt.
  [1
 
-{/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./LaTex/midnightSunLogoCircle.png>]
+{/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./LaTex/midnightSunLogoCircle.png>] <./LaTex/frontIso.PNG, id=12, 624.83438pt x 566.86781pt>
+File: ./LaTex/frontIso.PNG Graphic file (type png)
+ <use ./LaTex/frontIso.PNG>
+Package pdftex.def Info: ./LaTex/frontIso.PNG used on input line 82.
+(pdftex.def)             Requested size: 125.44136pt x 113.81102pt.
+ <./LaTex/rearIso.PNG, id=13, 624.83438pt x 564.60938pt>
+File: ./LaTex/rearIso.PNG Graphic file (type png)
+ <use ./LaTex/rearIso.PNG>
+Package pdftex.def Info: ./LaTex/rearIso.PNG used on input line 87.
+(pdftex.def)             Requested size: 125.94669pt x 113.81102pt.
+ <./LaTex/rearRight.PNG, id=14, 472.01344pt x 460.72125pt>
+File: ./LaTex/rearRight.PNG Graphic file (type png)
+ <use ./LaTex/rearRight.PNG>
+Package pdftex.def Info: ./LaTex/rearRight.PNG used on input line 93.
+(pdftex.def)             Requested size: 116.5986pt x 113.81102pt.
+ <./LaTex/brakingFBD.jpg, id=15, 1164.35pt x 778.91pt>
+File: ./LaTex/brakingFBD.jpg Graphic file (type jpg)
+ <use ./LaTex/brakingFBD.jpg>
+Package pdftex.def Info: ./LaTex/brakingFBD.jpg used on input line 105.
+(pdftex.def)             Requested size: 245.71756pt x 164.37224pt.
 
-LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 58.
 
-
-LaTeX Warning: Reference `fig:' on page 1 undefined on input line 70.
-
-
-LaTeX Warning: Reference `fig:' on page 1 undefined on input line 73.
-
-
-Package caption Warning: \label without proper \caption on input line 93.
-See the caption package documentation for explanation.
-
-
-LaTeX Warning: Reference `fig:systemModel' on page 1 undefined on input line 80.
-
-
-Overfull \hbox (32.972pt too wide) in paragraph at lines 90--90
-[] 
- []
+LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -647,92 +649,121 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[1] <./LaTex/systemModel.jpg, id=17, 2409.0pt x 1108.14pt>
+[1] <./LaTex/dynamicScrutineering.PNG, id=23, 341.275pt x 196.735pt>
+File: ./LaTex/dynamicScrutineering.PNG Graphic file (type png)
+ <use ./LaTex/dynamicScrutineering.PNG>
+Package pdftex.def Info: ./LaTex/dynamicScrutineering.PNG used on input line 132.
+(pdftex.def)             Requested size: 245.71756pt x 141.65207pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[2 <./LaTex/frontIso.PNG> <./LaTex/rearIso.PNG> <./LaTex/rearRight.PNG> <./LaTex/brakingFBD.jpg>] <./LaTex/steerFBD.jpg, id=34, 1108.14pt x 803.0pt>
+File: ./LaTex/steerFBD.jpg Graphic file (type jpg)
+ <use ./LaTex/steerFBD.jpg>
+Package pdftex.def Info: ./LaTex/steerFBD.jpg used on input line 143.
+(pdftex.def)             Requested size: 245.71756pt x 178.05736pt.
+ [3 <./LaTex/dynamicScrutineering.PNG> <./LaTex/steerFBD.jpg>]
+Overfull \hbox (32.972pt too wide) in paragraph at lines 191--191
+[] 
+ []
+
+[4] <./LaTex/systemModel.jpg, id=42, 2409.0pt x 1108.14pt>
 File: ./LaTex/systemModel.jpg Graphic file (type jpg)
  <use ./LaTex/systemModel.jpg>
-Package pdftex.def Info: ./LaTex/systemModel.jpg used on input line 94.
+Package pdftex.def Info: ./LaTex/systemModel.jpg used on input line 194.
 (pdftex.def)             Requested size: 393.1496pt x 180.83997pt.
-
-
-Package caption Warning: \label without proper \caption on input line 93.
-See the caption package documentation for explanation.
-
-
-LaTeX Warning: Reference `fig:systemModel' on page 2 undefined on input line 99.
-
-[2 <./LaTex/systemModel.jpg>]
-Overfull \hbox (15.82423pt too wide) detected at line 140
+ [5 <./LaTex/systemModel.jpg>] [6] [7] <./matlab/totalResp.png, id=53, 562.2606pt x 421.575pt>
+File: ./matlab/totalResp.png Graphic file (type png)
+ <use ./matlab/totalResp.png>
+Package pdftex.def Info: ./matlab/totalResp.png used on input line 321.
+(pdftex.def)             Requested size: 393.1496pt x 294.77884pt.
+ [8 <./matlab/totalResp.png (PNG copy)>]
+Overfull \hbox (15.82423pt too wide) detected at line 334
 [] \OML/cmm/m/it/12 X[] \OT1/cmr/m/n/12 + [] ^^B = \OML/cmm/m/it/12 c[]sY[] \OT1/cmr/m/n/12 + \OML/cmm/m/it/12 c[]sY[] \OT1/cmr/m/n/12 + \OML/cmm/m/it/12 k[]Y[] \OT1/cmr/m/n/12 + \OML/cmm/m/it/12 k[]Y[]
  []
 
-
-Package caption Warning: \label without proper \caption on input line 210.
-See the caption package documentation for explanation.
-
-
-LaTeX Warning: Reference `fig:impResp' on page 3 undefined on input line 198.
-
-<./matlab/impResp.png, id=22, 562.2606pt x 421.575pt>
+<./matlab/impResp.png, id=58, 562.2606pt x 421.575pt>
 File: ./matlab/impResp.png Graphic file (type png)
  <use ./matlab/impResp.png>
-Package pdftex.def Info: ./matlab/impResp.png used on input line 202.
+Package pdftex.def Info: ./matlab/impResp.png used on input line 393.
 (pdftex.def)             Requested size: 393.1496pt x 294.77884pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-
-LaTeX Warning: Reference `fig:fftImpResp' on page 3 undefined on input line 206.
-
-
-LaTeX Warning: Reference `fig:fftImpResp' on page 3 undefined on input line 207.
-
-<./matlab/fftImpResp.png, id=23, 562.2606pt x 421.575pt>
+<./matlab/fftImpResp.png, id=59, 562.2606pt x 421.575pt>
 File: ./matlab/fftImpResp.png Graphic file (type png)
  <use ./matlab/fftImpResp.png>
-Package pdftex.def Info: ./matlab/fftImpResp.png used on input line 211.
+Package pdftex.def Info: ./matlab/fftImpResp.png used on input line 401.
 (pdftex.def)             Requested size: 393.1496pt x 294.77884pt.
- [3]
+
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[4 <./matlab/impResp.png (PNG copy)>]
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 226.
+[9]
+
+LaTeX Warning: Text page 10 contains only floats.
+
+
+Overfull \vbox (2.44753pt too high) has occurred while \output is active []
+
+ [10 <./matlab/impResp.png (PNG copy)> <./matlab/fftImpResp.png (PNG copy)>] (/Users/Devon/Documents/Waterloo/midSun/MechGitRepo/SpringRateProject/.texpadtmp/MSXII Supsension Parameters.bbl
+Underfull \hbox (badness 10000) in paragraph at lines 4--8
+[]\OT1/cmr/m/n/12 American So-lar Chal-lenge.  2018 reg-u-la-tions, [on-line], 2017.
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 4--8
+\OT1/cmr/m/n/12 http://americansolarchallenge.org/ASC/wp-content/uploads/2016/08/ASC2018-Regs-
+ []
+
+
+Underfull \hbox (badness 2134) in paragraph at lines 10--15
+[]\OT1/cmr/m/n/12 Jim Kasprzak.  Un-der-stand-ing your dampers: A guide from jim kasprzak, [on-
+ []
+
+
+Underfull \hbox (badness 1194) in paragraph at lines 10--15
+\OT1/cmr/m/n/12 line], 2017.  http://www.kaztechnologies.com/wp-content/uploads/2014/03/A-Guide-To-
+ []
+
+) [11]
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 417.
  (/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
-) (./matlab/createTransferFunctions.m
+) (./matlab/alternativeFormulation.m
 Missing character: There is no © in font pcrr7t!
 LaTeX Font Info:    Try loading font information for TS1+pcr on input line 17.
  (/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/ts1pcr.fd
 File: ts1pcr.fd 2001/06/04 font definitions for TS1/pcr.
-) [5 <./matlab/fftImpResp.png (PNG copy)>]
+) [12]
 LaTeX Font Info:    Try loading font information for OMS+pcr on input line 74.
  (/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/omspcr.fd
 File: omspcr.fd 
 )
 LaTeX Font Info:    Font shape `OMS/pcr/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 74.
- [6] [7] [8] [9]) [10] (/Users/Devon/Documents/Waterloo/midSun/MechGitRepo/SpringRateProject/.texpadtmp/MSXII Supsension Parameters.aux)
-
-LaTeX Warning: There were undefined references.
-
+ [13]) [14] (./matlab/simplifiedFormulation.m
+Missing character: There is no © in font pcrr7t!
+ [15]) [16] (/Users/Devon/Documents/Waterloo/midSun/MechGitRepo/SpringRateProject/.texpadtmp/MSXII Supsension Parameters.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 11093 strings out of 493089
- 165702 string characters out of 6134842
- 638961 words of memory out of 5000000
- 14349 multiletter control sequences out of 15000+600000
- 11101 words of font info for 40 fonts, out of 8000000 for 9000
+ 11263 strings out of 493089
+ 168397 string characters out of 6134842
+ 579541 words of memory out of 5000000
+ 14502 multiletter control sequences out of 15000+600000
+ 11401 words of font info for 41 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 53i,15n,92p,1838b,1671s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb>
-Output written on "/Users/Devon/Documents/Waterloo/midSun/MechGitRepo/SpringRateProject/.texpadtmp/MSXII Supsension Parameters.pdf" (11 pages, 541120 bytes).
+ 53i,17n,92p,1838b,1669s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb>
+Output written on "/Users/Devon/Documents/Waterloo/midSun/MechGitRepo/SpringRateProject/.texpadtmp/MSXII Supsension Parameters.pdf" (17 pages, 1374704 bytes).
 PDF statistics:
- 91 PDF objects out of 1000 (max. 8388607)
- 61 compressed objects within 1 object stream
+ 129 PDF objects out of 1000 (max. 8388607)
+ 80 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 21 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 56 words of extra memory for PDF output out of 10000 (max. 10000000)
 

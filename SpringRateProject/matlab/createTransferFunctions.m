@@ -19,14 +19,14 @@ close all;
 
 % ----------------------------- Constants ------------------------------ %
 
-c1_ = 0;     % Front damping coefficient (Ns/m)
-c2_ = 0;     % Rear damping coefficient (Ns/m) 
-k1_ = 50000;    % Front sring rate (N/m) 
-k2_ = 60000;    % Rear sring rate (N/m)
-m_ = 500;       % Mass of the vehicle (kg)
+c1_ = 9670;     % Front damping coefficient (Ns/m)
+c2_ = 9670;     % Rear damping coefficient (Ns/m) 
+k1_ = 650*175.1;    % Front sring rate (N/m) 
+k2_ = 550*175.1;    % Rear sring rate (N/m)
+m_ = 550;       % Mass of the vehicle (kg)
 I_ = 550;       % Moment of interial about global x axis (kg*m^2)
-a_ = 1.2;       % Distance from COG to front tire (m)
-b_ = 1.4;       % Distance from COG to rear tire (m)
+a_ = 1.3;       % Distance from COG to front tire (m)
+b_ = 1.3;       % Distance from COG to rear tire (m)
 
 % ---------------------- Forcing Function Parameters ------------------- %
 
@@ -45,12 +45,6 @@ set_param('halfCarModel/DelayB','DelayTime',mat2str(timeDelay));
 % ----------------- Create Symbolic Transfer Functions ----------------- %
 
 syms t s c1 c2 k1 k2 m I a b t0 A w0 c k 
-
-c1 = c;
-c2 = c;
-k1 = k;
-k2 = k;
-b = a;
 
 QA1 = m*s^2 + (c1+c2)*s + (k1+k2); % X terms of ODE (A) 
 QA2 = (b*c2-a*c1)*s + (b*k2-a*k1); % Theta terms of ODE (A)
