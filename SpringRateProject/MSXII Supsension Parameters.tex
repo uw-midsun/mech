@@ -52,10 +52,10 @@
 % Main Matter
 \section{Background}
 \subsection{Vehicle Design}
-Midnight Sun Twelve (MSXII) is a cruiser class solar electric vehicle being designed with the goal of competing in the 2018 American Solar Challenge (ASC 2018) and the 2019 World Solar Challenge (WSC 2019). Cruiser class vehicles are must be multi-occupant and are designed with the intent of being more practical than a typical solar car. Because of the unique requirements of this class, the spring rates and target damping coefficients on MSXII's suspension must be selected to optimize for efficient while still keeping driver comfort in mind. This report proposes and analytical technique for determining the response of the suspension system to a variety of road conditions. 
+Midnight Sun Twelve (MSXII) is a cruiser class, solar electric vehicle being designed with the goal of competing in the 2018 American Solar Challenge (ASC 2018) and the 2019 World Solar Challenge (WSC 2019). By definition, cruiser class solar vehicles must be multi-occupant and are designed with the intent of being more practical than a typical, challenger class solar car. Because of the unique requirements of this class, the spring rates and target damping coefficients on MSXII's suspension must be selected to optimize for efficiency while still keeping driver comfort in mind. This report proposes an analytical technique for determining the response of a suspension system to any given road conditions. 
 
 \subsection{Important Vehicle Parameters}
-Table \ref{tab:params} lists predicted vehicle parameters that are of importance to the design and analysis of the suspension. The mass and moment of inertia was computed by CAD software. 
+Table \ref{tab:params} lists vehicle parameters that are of importance to the design and analysis of MSXII's suspension. The mass and moment of inertia was computed by CAD software. 
 \begin{table}[htbp]
 	\centering
 	\caption{Important Vehicle Parameters}
@@ -73,24 +73,24 @@ Table \ref{tab:params} lists predicted vehicle parameters that are of importance
 	\end{tabular}
 \end{table}
 \subsection{Suspension Architecture}
-MSXII's front suspension comprises of a double wishbone linkage with an outboard coilover while the rear suspension comprises of independent trailing arms allowing for zero scrub and thus less rolling resistance. Figure \ref{fig:solidworksScreenshots} shows the screenshots of the front and rears suspension.  
+MSXII's front suspension comprises of a double wishbone linkage with an outboard coilover while the rear suspension comprises of independent trailing arms allowing for zero scrub and thus less rolling resistance. Figure \ref{fig:solidworksScreenshots} shows the screenshots of the front and rear suspension.  
 \begin{figure}[htbp]
 	\centering
     \begin{subfigure}[b]{.32\textwidth}
 		\caption{Front Isometric View}
 		\centering
-        \includegraphics[height=4cm]{./LaTex/frontIso.PNG}
+        \includegraphics[height=3.5cm]{./LaTex/frontIso.PNG}
     \end{subfigure}
     \begin{subfigure}[b]{.32\textwidth}
 		\caption{Rear Isometric View}
 		\centering
-        \includegraphics[height=4cm]{./LaTex/rearIso.PNG}
+        \includegraphics[height=3.5cm]{./LaTex/rearIso.PNG}
         \label{fig:c8}
     \end{subfigure}
     \begin{subfigure}[b]{.32\textwidth}
 		\caption{Rear Sie View}
 		\centering
-        \includegraphics[height=4cm]{./LaTex/rearRight.PNG}
+        \includegraphics[height=3.5cm]{./LaTex/rearRight.PNG}
         \label{fig:c9}
     \end{subfigure}
     \caption{MSXII Suspension Design (Screenshots from Solidworks)}
@@ -99,18 +99,18 @@ MSXII's front suspension comprises of a double wishbone linkage with an outboard
 	
 \subsection{Selecting Suspension Parameters}
 \label{sec:paramSelection}
-The spring rates are to be calculated based on the travel of the wheel and the maximum loading conditions. Assuming a smooth driving surface, the largest normal force acting on the tire from the road will occur while braking in a turn. To approximate this loading condition the a superposition of two static half car models is used; one for cornering and one for hard braking.  
+The spring rates are calculated based on the travel of the wheel and the maximum vertical loading of the wheel due to normal force from the road. Assuming a smooth driving surface, the largest normal force acting on the tire will occur while braking in a turn. To approximate this loading condition, the a superposition of two static half car models is used; one for cornering and one for hard braking.  
 \subsubsection{Hard Braking}\begin{figure}[h!]
 	\centering
 	\includegraphics[width=.5\textwidth]{./LaTex/brakingFBD.jpg}
 	\caption{Free Body Diagram of a Car Braking}
 	\label{fig:barkingFBD}
 \end{figure}
-Figure \ref{fig:barkingFBD} shows a free body diagram of a half car model undergoing braking. MSXII will only have brake callipers on the front wheels however regenerative braking from the hub motors will also provide a braking force at the rear contact patch. Assuming a generous coefficient of static friction, $\mu _s$, of 1.0 and the extreme case where the both the font and rear tires are about to begin sliding the combined braking force can be expressed as: 
+Figure \ref{fig:barkingFBD} shows a free body diagram of a half car model undergoing braking. MSXII will only have brake callipers on the front wheels however regenerative braking from the hub motors will also provide a braking force at the rear contact patches. Assuming a generous coefficient of static friction, $\mu _s$, of 1.0 and the extreme case where the both the font and rear tires are about to begin sliding, the combined braking force can be expressed as: 
 \begin{equation}
 	F_{braking} = F_{Nf} + F_{Nr} = \mu _s F_{N_{net}} =  \mu _s Mg = (1.0)(550kg)\left(9.81\frac{m}{s^2}\right) = 5.40kN
 \end{equation}
-Summing the moments about the centre of gravity and the vertical forces results in the following equations: 
+From Figure \ref{fig:barkingFBD}, summing the moments about the centre of gravity and the vertical forces results in the following equations: 
 \begin{equation}
 	aF_{Nf} = hF_{braking} + bF_{Nr}
 \end{equation}
@@ -124,7 +124,7 @@ Solving for the front normal force:
 	F_{Nf} &= \frac{hF_{braking} + bMg}{a+b} = \frac{(0.52m)(5.40kN)+(1.28m)(550kg)\left(9.81\frac{m}{s^2}\right)}{(1.32m)+(1.28m)} = 2.66kN
 \end{split}
 \end{equation}
-Note that the 2.66kN above is for both front wheels. Therefore there is approximately \textbf{1.33kN} of normal force on each front tire during hard braking. 
+Note that 2.66kN is for both front wheels. Therefore there is approximately \textbf{1.33kN} of normal force on each front tire during hard braking. 
 
 \subsubsection{Cornering}
 \begin{figure}[h!]
@@ -134,7 +134,7 @@ Note that the 2.66kN above is for both front wheels. Therefore there is approxim
 	\cite{ASC2018regs}}
 	\label{fig:dynamicScrutineering}
 \end{figure}
-The ASC 2018 regulations stipulate that a vehicle must be able to navigate a figure of eight as shown in Figure \ref{fig:dynamicScrutineering} in less than 18 seconds \cite{ASC2018regs}. Since the average arc length of the figure of eight is $34\pi$, the net cornering force required to navigate the figure of eight can be found as follows:
+The ASC 2018 regulations stipulate that a vehicle must be able to navigate a figure of eight as shown in Figure \ref{fig:dynamicScrutineering} in less than 18 seconds \cite{ASC2018regs}. Since the average arc length of the figure of eight is $34\pi m$, the net cornering force required to navigate the figure of eight can be found as follows:
 \begin{equation}
 	F_{si} + F_{so} = F_{steer} = \frac{Mv^2}{r} = \frac{(550kg)\left(\frac{34\pi m}{18s}\right)^2}{8.5m} = 2.28kN
 \end{equation}
@@ -144,14 +144,15 @@ The ASC 2018 regulations stipulate that a vehicle must be able to navigate a fig
 	\caption{Free Body Diagram of a Car Cornering}
 	\label{fig:steerFBD}
 \end{figure}
-For the half car model shown if Figure \ref{fig:steerFBD} umming the moments about the centre of gravity and the vertical forces results in the following equations: 
+
+\noindent For the half car model shown if Figure \ref{fig:steerFBD}, summing the moments about the centre of gravity and the vertical forces results in the following equations: 
 \begin{equation}
 	\frac{track}{2}F_{Nf} = hF_{steer} + \frac{track}{2}F_{Nr}
 \end{equation}
 \begin{equation}
 	F_{No} + F_{Ni} = Mg
 \end{equation}
-Solving for the front normal force: 
+Solving for the outside wheel normal force: 
 \begin{equation}
 \begin{split}
 	\frac{track}{2}F_{No} &= hF_{steer} + \frac{track}{2}(Mg - F_{Ni})\\
@@ -160,11 +161,11 @@ Solving for the front normal force:
 \end{equation}
 Note that the 2.70kN above is for both front and rear outside wheels. Assuming the force is evenly split between the front and rear, there is approximately \textbf{1.35kN} of normal force on each outside tire during maximum cornering. 
 \subsubsection{Spring Rate Selection}
-Adding the maximum normal forces from cornering and braking results in 2.68kN. The maximum travel of the suspension for MSXII in compression has been set to 45mm. It is desired that under the combined of braking and cornering, the suspension compresses to a maximum of 70\% of the travel. As such, the desired spring rate is found to be: 
+Adding the maximum normal forces from cornering and braking results in 2.68kN. The maximum travel of the suspension for MSXII in compression has been set to 45mm. It is desired that under the combined loading condition of braking and cornering, the suspension compresses to a maximum of 70\% of the travel. As such, the desired spring rate is found to be: 
 \begin{equation}
 	k = \frac{force}{displacement} = \frac{2.68N}{(70\%)(0.045m)} = 85.0kN/m
 \end{equation}
-Note that the above rate assumes a vertical spring. The vertical spring rate can be mapped to an equivalent spring rate by dividing by the cosine of the angle that the coilover makes with the vertical direction: 
+Note that the above rate assumes a vertical spring. The vertical spring rate can be mapped to an equivalent angled spring rate by dividing by the cosine of the angle that the coilover makes with the vertical direction: 
 \begin{equation}
 	\begin{split}
 		k_{front} &= \frac{85.0}{cos(35)} = 110.6kN \\
@@ -174,18 +175,18 @@ Note that the above rate assumes a vertical spring. The vertical spring rate can
 MSXII will be using Ohlins TTX25 MkII coilovers for both the front and rear. These coilovers can be configured to have spring rates from 150 lb/in to 650 lb/in in increments of 50 lb/in. 1 lb/in is approximately 175 N/m therefore 550 lb/in coils should be selected for the front and 650 lb/in coils for the rear. 
 
 \subsubsection{Damping Coefficient Selection}
-Ohlins has published curves for their TTX25 MkII's however real world damping rates are non constant. For this report, the damping coefficient will be idealized as constant and will be selected such that the damping ratio, $\zeta$, is 0.5. This is typical of performance consumer vehicles \cite{dampers}. Given an equivalent vertical spring rate or 85.0kN/m, a damping ratio of 0.5 maps to a vertical damping coefficient of \textbf(4.83kNs/m). 
+Ohlins has published damper curves for their TTX25 MkII's however real world damping rates are non constant. For this report, the damping coefficient will be idealized as constant and will be selected such that the damping ratio, $\zeta$, is 0.5. This is typical of high performance consumer vehicles \cite{dampers}. Given an equivalent vertical spring rate or 85.0kN/m, a damping ratio of 0.5 maps to a vertical damping coefficient of \textbf(4.83kNs/m). 
 
 \section{Suspension Model}
 \subsection{Overview}
 MSXII's suspension is modelled using a point mass connected to two vertical, linear spring mass damper systems at the two wheels. This half car model assumes infinite tire stiffness and that the vehicle pitches about it's center of gravity. Figure \ref{fig:systemModel} describes the proposed model where: 
 \begin{align*}
-	\theta & \text{ is the pitch angle about positive x axis}\\        
+	\theta & \text{ is the pitch angle about the axis normal to the vehicle's symmetry plane}\\        
 	x_0 & \text{ is the displacement of the center of gravity in the vertical axis} \\
 	x_1 \text{ \& } x_2 & \text{ are the displacements of the mounting points for the front and rear wheels respectively} \\
 	y_1 \text{ \& } y_2 & \text{ is the change in road elevation below the front  and rear wheels respectively} \\
 	M & \text{ is the mass of the vehicle} \\
-	I & \text{ is the moment of inertia normal to the half car plane at the center of gravity} \\
+	I & \text{ is the moment of inertia normal to the vehicle’s symmetry plane at the center of gravity} \\
 	k1,k2,c1 \text{ \& } c_2 & \text{ are the spring and damping coefficients} \\
 	a \text{ \& } b & \text{ are the distances from center of gravity to the front and rear wheels respectively}
 \end{align*}
@@ -233,7 +234,7 @@ Substituting into the original differential equations:
 \begin{equation}
 	I \ddot\theta + \dot x_0(bc_2-ac_1) + \dot\theta(b^2c_2+a^2c_1) + x_0(bk_2-ak_1) + \theta(b^2k_2+a^2k_1) = -ac_1\dot y_1 + bc_2\dot y_2 - ak_1y_1 + bk_2y_2
 \end{equation}
-The above two equations are considerably complex and are not particularly conducive of solving analytically by hand. However, the fact that the vehicle has the center of gravity approximately centered along the wheel offers an avenue for simplification. Additionally if the front and rear spring and damping coefficients are assumed to be the same ($k$ and $c$ respectively), the problem's complexity is drastically reduced as shown in the following two equations: 
+The above two equations are considerably complex and are not particularly conducive of solving analytically by hand. However, the fact that the vehicle has the center of gravity approximately centered along the wheel such that $a$ and $b$ are equal, offers an avenue for simplification. Additionally if the front and rear spring and damping coefficients are assumed to be the same ($k$ and $c$ respectively), the problem's complexity is drastically reduced as shown in the following two equations: 
 \begin{equation}
 	M \ddot x + 2c\dot x_0 + 2kx_0 = c\dot y_1 + c\dot y_2 + ky_1 + ky_2
 \end{equation}
@@ -259,8 +260,8 @@ The critical camping coefficient for the translational and rotational components
 	\end{split}  
 \end{equation}
 
-\subsubsection{Final Equations fo Motion}
-The road displacement can be approximated by a sinusoid with and amplitude $A$ and a base excitation frequency $\omega _b$. Since rear tires experience the parts to the road as the front $y_2$ can be expressed as a phase shifted version of $y_1$. Combining this with the natural frequency and damping ratio results in the following equations of motion: 
+\subsubsection{Final Equations of Motion}
+The road displacement can be approximated by a sinusoid with and amplitude $A$ and a base excitation frequency $\omega _b$. Since the rear wheels experience the same displacements as the front $y_2$ can be expressed as a phase shifted version of $y_1$. Combining this with the natural frequency and damping ratio results in the following equations of motion: 
 \begin{equation}
 	\label{eq:eomx}
 	\ddot x + (2\zeta _x M \omega _{nx}) \dot x_0 + (\omega _{nx}^2)x_0 = \frac{cA\omega _b}{M}cos(\omega _b t) + \frac{cA\omega _b}{M}cos(\omega _b (t-t_0))  + \frac{kA}{M}sin(\omega _b t) + \frac{kA}{M}sin(\omega _b (t-t_0))
@@ -274,7 +275,7 @@ The road displacement can be approximated by a sinusoid with and amplitude $A$ a
 
 \subsection{Total Response}
 \subsubsection{Base Excitation Parameters}
-To model real road conditions conditions a sinusoid with a amplitude of 0.015 and a frequency of 69.7 rad/s is used. This corresponds to 30mm peak to peak bumps that are separated by a distance of 2m while driving at 80km/hr (calculated in Appendix \ref{app:simple}). 
+To model real road conditions, a sinusoid with a amplitude of 0.015 and a frequency of 69.7 rad/s is used. This corresponds to 30mm peak to peak bumps that are separated by a distance of 2m while driving at 80km/hr (calculated in Appendix \ref{app:simple}). 
 
 \subsubsection{Initial conditions}
 For the total response, the initial conditions of the system are all set to zero. This represents the vehicle traveling on a perfectly smooth road before encountering disturbances at time $t = 0$. 
@@ -376,7 +377,7 @@ Equation \ref{eq:matrix1} can then be rewritten as follows:
 	= 
 	\left(\left[P_1\right]+\left[P_2\right]e^{-st_0}\right)Y
 \end{equation}
-Since the system is linear linear, the above matrix equation can be solved in two parts to obtain the transfer functions for $X_0$ and $\Theta$:
+Since the system is linear, the above matrix equation can be solved in two parts to obtain the transfer functions for $X_0$ and $\Theta$:
 \begin{equation}
 	\frac{\begin{bmatrix} 
 		X_0 \\

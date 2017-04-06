@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  4 APR 2017 19:18
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  5 APR 2017 14:41
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -623,25 +623,17 @@ Package pdftex.def Info: ./LaTex/midnightSunLogoCircle.png used on input line 37
 File: ./LaTex/frontIso.PNG Graphic file (type png)
  <use ./LaTex/frontIso.PNG>
 Package pdftex.def Info: ./LaTex/frontIso.PNG used on input line 82.
-(pdftex.def)             Requested size: 125.44136pt x 113.81102pt.
+(pdftex.def)             Requested size: 109.76715pt x 99.58464pt.
  <./LaTex/rearIso.PNG, id=13, 624.83438pt x 564.60938pt>
 File: ./LaTex/rearIso.PNG Graphic file (type png)
  <use ./LaTex/rearIso.PNG>
 Package pdftex.def Info: ./LaTex/rearIso.PNG used on input line 87.
-(pdftex.def)             Requested size: 125.94669pt x 113.81102pt.
+(pdftex.def)             Requested size: 110.20572pt x 99.58464pt.
  <./LaTex/rearRight.PNG, id=14, 472.01344pt x 460.72125pt>
 File: ./LaTex/rearRight.PNG Graphic file (type png)
  <use ./LaTex/rearRight.PNG>
 Package pdftex.def Info: ./LaTex/rearRight.PNG used on input line 93.
-(pdftex.def)             Requested size: 116.5986pt x 113.81102pt.
- <./LaTex/brakingFBD.jpg, id=15, 1164.35pt x 778.91pt>
-File: ./LaTex/brakingFBD.jpg Graphic file (type jpg)
- <use ./LaTex/brakingFBD.jpg>
-Package pdftex.def Info: ./LaTex/brakingFBD.jpg used on input line 105.
-(pdftex.def)             Requested size: 245.71756pt x 164.37224pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
+(pdftex.def)             Requested size: 102.02107pt x 99.58464pt.
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -649,7 +641,12 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[1] <./LaTex/dynamicScrutineering.PNG, id=23, 341.275pt x 196.735pt>
+[1 <./LaTex/frontIso.PNG> <./LaTex/rearIso.PNG> <./LaTex/rearRight.PNG>] <./LaTex/brakingFBD.jpg, id=26, 1164.35pt x 778.91pt>
+File: ./LaTex/brakingFBD.jpg Graphic file (type jpg)
+ <use ./LaTex/brakingFBD.jpg>
+Package pdftex.def Info: ./LaTex/brakingFBD.jpg used on input line 105.
+(pdftex.def)             Requested size: 245.71756pt x 164.37224pt.
+ <./LaTex/dynamicScrutineering.PNG, id=27, 341.275pt x 196.735pt>
 File: ./LaTex/dynamicScrutineering.PNG Graphic file (type png)
  <use ./LaTex/dynamicScrutineering.PNG>
 Package pdftex.def Info: ./LaTex/dynamicScrutineering.PNG used on input line 132.
@@ -658,35 +655,60 @@ Package pdftex.def Info: ./LaTex/dynamicScrutineering.PNG used on input line 132
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[2 <./LaTex/frontIso.PNG> <./LaTex/rearIso.PNG> <./LaTex/rearRight.PNG> <./LaTex/brakingFBD.jpg>] <./LaTex/steerFBD.jpg, id=34, 1108.14pt x 803.0pt>
+[2 <./LaTex/brakingFBD.jpg>] <./LaTex/steerFBD.jpg, id=34, 1108.14pt x 803.0pt>
 File: ./LaTex/steerFBD.jpg Graphic file (type jpg)
  <use ./LaTex/steerFBD.jpg>
 Package pdftex.def Info: ./LaTex/steerFBD.jpg used on input line 143.
 (pdftex.def)             Requested size: 245.71756pt x 178.05736pt.
  [3 <./LaTex/dynamicScrutineering.PNG> <./LaTex/steerFBD.jpg>]
-Overfull \hbox (32.972pt too wide) in paragraph at lines 191--191
+Missing character: There is no â in font cmr12!
+Missing character: There is no € in font cmr12!
+Missing character: There is no ™ in font cmr12!
+Missing character: There is no â in font cmr12!
+Missing character: There is no € in font cmr12!
+Missing character: There is no ™ in font cmr12!
+Missing character: There is no â in font cmr8!
+Missing character: There is no € in font cmr8!
+Missing character: There is no ™ in font cmr8!
+Missing character: There is no â in font cmr6!
+Missing character: There is no € in font cmr6!
+Missing character: There is no ™ in font cmr6!
+Missing character: There is no â in font cmr12!
+Missing character: There is no € in font cmr12!
+Missing character: There is no ™ in font cmr12!
+Missing character: There is no â in font cmr12!
+Missing character: There is no € in font cmr12!
+Missing character: There is no ™ in font cmr12!
+Missing character: There is no â in font cmr8!
+Missing character: There is no € in font cmr8!
+Missing character: There is no ™ in font cmr8!
+Missing character: There is no â in font cmr6!
+Missing character: There is no € in font cmr6!
+Missing character: There is no ™ in font cmr6!
+
+Overfull \hbox (36.1053pt too wide) in paragraph at lines 192--192
 [] 
  []
 
 [4] <./LaTex/systemModel.jpg, id=42, 2409.0pt x 1108.14pt>
 File: ./LaTex/systemModel.jpg Graphic file (type jpg)
  <use ./LaTex/systemModel.jpg>
-Package pdftex.def Info: ./LaTex/systemModel.jpg used on input line 194.
+Package pdftex.def Info: ./LaTex/systemModel.jpg used on input line 195.
 (pdftex.def)             Requested size: 393.1496pt x 180.83997pt.
  [5 <./LaTex/systemModel.jpg>] [6] [7] <./matlab/totalResp.png, id=53, 562.2606pt x 421.575pt>
 File: ./matlab/totalResp.png Graphic file (type png)
  <use ./matlab/totalResp.png>
-Package pdftex.def Info: ./matlab/totalResp.png used on input line 321.
+Package pdftex.def Info: ./matlab/totalResp.png used on input line 322.
 (pdftex.def)             Requested size: 393.1496pt x 294.77884pt.
  [8 <./matlab/totalResp.png (PNG copy)>]
-Overfull \hbox (15.82423pt too wide) detected at line 334
+Overfull \hbox (15.82423pt too wide) detected at line 335
 [] \OML/cmm/m/it/12 X[] \OT1/cmr/m/n/12 + [] ^^B = \OML/cmm/m/it/12 c[]sY[] \OT1/cmr/m/n/12 + \OML/cmm/m/it/12 c[]sY[] \OT1/cmr/m/n/12 + \OML/cmm/m/it/12 k[]Y[] \OT1/cmr/m/n/12 + \OML/cmm/m/it/12 k[]Y[]
  []
 
 <./matlab/impResp.png, id=58, 562.2606pt x 421.575pt>
 File: ./matlab/impResp.png Graphic file (type png)
  <use ./matlab/impResp.png>
-Package pdftex.def Info: ./matlab/impResp.png used on input line 393.
+Package pdftex.def Info: ./matlab/impResp.png used on input line 394.
 (pdftex.def)             Requested size: 393.1496pt x 294.77884pt.
 
 
@@ -695,7 +717,7 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 <./matlab/fftImpResp.png, id=59, 562.2606pt x 421.575pt>
 File: ./matlab/fftImpResp.png Graphic file (type png)
  <use ./matlab/fftImpResp.png>
-Package pdftex.def Info: ./matlab/fftImpResp.png used on input line 401.
+Package pdftex.def Info: ./matlab/fftImpResp.png used on input line 402.
 (pdftex.def)             Requested size: 393.1496pt x 294.77884pt.
 
 
@@ -729,7 +751,7 @@ Underfull \hbox (badness 1194) in paragraph at lines 10--15
  []
 
 ) [11]
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 417.
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 418.
  (/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 ) (./matlab/alternativeFormulation.m
@@ -760,7 +782,7 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  53i,17n,92p,1838b,1669s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb>
-Output written on "/Users/Devon/Documents/Waterloo/midSun/MechGitRepo/SpringRateProject/.texpadtmp/MSXII Supsension Parameters.pdf" (17 pages, 1374704 bytes).
+Output written on "/Users/Devon/Documents/Waterloo/midSun/MechGitRepo/SpringRateProject/.texpadtmp/MSXII Supsension Parameters.pdf" (17 pages, 1375012 bytes).
 PDF statistics:
  129 PDF objects out of 1000 (max. 8388607)
  80 compressed objects within 1 object stream
