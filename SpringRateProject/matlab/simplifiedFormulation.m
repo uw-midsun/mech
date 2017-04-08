@@ -21,14 +21,14 @@ clc;
 % ----------------------------- Constants ------------------------------ %
 
 c_ = 4830;     % Front damping coefficient (Ns/m)
-k_ = 85000;    % Front sring rate (N/m) 
+k_ = 88600;    % Front sring rate (N/m) 
 M_ = 550;      % Mass of the vehicle (kg)
 I_ = 550;      % Moment of interial about global x axis (kg*m^2)
 a_ = 1.3;      % Distance from COG to front tire and rear tire (m)
-zx_ = 0.50;     % Damping ratio of translational  
-wnx_ = 17.58;   % Natural frequency of pitch
-zth_ = 0.65;    % Damping ratio of pitch
-wnth_ = 22.86;  % Natural frequency of pitch
+zx_ = 0.49;     % Damping ratio of translational  
+wnx_ = 17.95;   % Natural frequency of pitch
+zth_ = 0.64;    % Damping ratio of pitch
+wnth_ = 23.33;  % Natural frequency of pitch
 
 
 % ---------------------- Forcing Function Parameters ------------------- %

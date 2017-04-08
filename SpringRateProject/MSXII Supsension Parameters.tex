@@ -120,11 +120,11 @@ From Figure \ref{fig:barkingFBD}, summing the moments about the centre of gravit
 Solving for the front normal force: 
 \begin{equation}
 \begin{split}
-	aF_{Nf} &= hF_{braking} + b(Mg - F_{Nr})\\
-	F_{Nf} &= \frac{hF_{braking} + bMg}{a+b} = \frac{(0.52m)(5.40kN)+(1.28m)(550kg)\left(9.81\frac{m}{s^2}\right)}{(1.32m)+(1.28m)} = 2.66kN
+	aF_{Nf} &= hF_{braking} + b(Mg - F_{Nf})\\
+	F_{Nf} &= \frac{hF_{braking} + bMg}{a+b} = \frac{(0.52m)(5.40kN)+(1.28m)(550kg)\left(9.81\frac{m}{s^2}\right)}{(1.32m)+(1.28m)} = 3.74kN
 \end{split}
 \end{equation}
-Note that 2.66kN is for both front wheels. Therefore there is approximately \textbf{1.33kN} of normal force on each front tire during hard braking. 
+Note that 3.74kN is for both front wheels. Therefore there is approximately \textbf{1.87kN} of normal force on each front tire during hard braking. 
 
 \subsubsection{Cornering}
 \begin{figure}[h!]
@@ -147,7 +147,7 @@ The ASC 2018 regulations stipulate that a vehicle must be able to navigate a fig
 
 \noindent For the half car model shown if Figure \ref{fig:steerFBD}, summing the moments about the centre of gravity and the vertical forces results in the following equations: 
 \begin{equation}
-	\frac{track}{2}F_{Nf} = hF_{steer} + \frac{track}{2}F_{Nr}
+	\frac{track}{2}F_{No} = hF_{steer} + \frac{track}{2}F_{Ni}
 \end{equation}
 \begin{equation}
 	F_{No} + F_{Ni} = Mg
@@ -156,26 +156,26 @@ Solving for the outside wheel normal force:
 \begin{equation}
 \begin{split}
 	\frac{track}{2}F_{No} &= hF_{steer} + \frac{track}{2}(Mg - F_{Ni})\\
-	F_{No} &= \frac{hF_{steer} + \frac{track}{2}Mg}{track} = \frac{(0.52m)(2.28kN)+(0.80m)(550kg)\left(9.81\frac{m}{s^2}\right)}{1.60m} = 2.70kN
+	F_{No} &= \frac{hF_{steer} + \frac{track}{2}Mg}{track} = \frac{(0.52m)(2.28kN)+(0.80m)(550kg)\left(9.81\frac{m}{s^2}\right)}{1.60m} = 3.44kN
 \end{split}
 \end{equation}
-Note that the 2.70kN above is for both front and rear outside wheels. Assuming the force is evenly split between the front and rear, there is approximately \textbf{1.35kN} of normal force on each outside tire during maximum cornering. 
+Note that the 3.44kN above is for both front and rear outside wheels. Assuming the force is evenly split between the front and rear, there is approximately \textbf{1.72kN} of normal force on each outside tire during maximum cornering. 
 \subsubsection{Spring Rate Selection}
-Adding the maximum normal forces from cornering and braking results in 2.68kN. The maximum travel of the suspension for MSXII in compression has been set to 45mm. It is desired that under the combined loading condition of braking and cornering, the suspension compresses to a maximum of 70\% of the travel. As such, the desired spring rate is found to be: 
+Adding the maximum normal forces from cornering and braking results in 3.59kN. The maximum travel of the suspension for MSXII in compression has been set to 45mm. It is desired that under the combined loading condition of braking and cornering, the suspension compresses to a maximum of 90\% of the travel. As such, the desired spring rate is found to be: 
 \begin{equation}
-	k = \frac{force}{displacement} = \frac{2.68N}{(70\%)(0.045m)} = 85.0kN/m
+	k = \frac{force}{displacement} = \frac{3.59kN}{(70\%)(0.045m)} = 88.6kN/m
 \end{equation}
 Note that the above rate assumes a vertical spring. The vertical spring rate can be mapped to an equivalent angled spring rate by dividing by the cosine of the angle that the coilover makes with the vertical direction: 
 \begin{equation}
 	\begin{split}
-		k_{front} &= \frac{85.0}{cos(35)} = 110.6kN \\
-		k_{rear} &= {85.0}{cos(30)} = 98.1kN
+		k_{front} &= \frac{88.6}{cos(35)} = 108.2kN \\
+		k_{rear} &= {88.6}{cos(30)} = 102.3kN
 	\end{split}
 \end{equation}
-MSXII will be using Ohlins TTX25 MkII coilovers for both the front and rear. These coilovers can be configured to have spring rates from 150 lb/in to 650 lb/in in increments of 50 lb/in. 1 lb/in is approximately 175 N/m therefore 550 lb/in coils should be selected for the front and 650 lb/in coils for the rear. 
+MSXII will be using Ohlins TTX25 MkII coilovers for both the front and rear. These coilovers can be configured to have spring rates from 150 lb/in to 650 lb/in in increments of 50 lb/in. 1 lb/in is approximately 175 N/m therefore 600 lb/in coils should be selected for the front and 600 lb/in coils for the rear. 
 
 \subsubsection{Damping Coefficient Selection}
-Ohlins has published damper curves for their TTX25 MkII's however real world damping rates are non constant. For this report, the damping coefficient will be idealized as constant and will be selected such that the damping ratio, $\zeta$, is 0.5. This is typical of high performance consumer vehicles \cite{dampers}. Given an equivalent vertical spring rate or 85.0kN/m, a damping ratio of 0.5 maps to a vertical damping coefficient of \textbf(4.83kNs/m). 
+Ohlins has published damper curves for their TTX25 MkII's however real world damping rates are non constant. For this report, the damping coefficient will be idealized as constant and will be selected such that the damping ratio, $\zeta$, is 0.5. This is typical of high performance consumer vehicles \cite{dampers}. Given an equivalent vertical spring rate or 88.6/m, a damping ratio of 0.5 maps to a vertical damping coefficient of \textbf(4.83kNs/m). 
 
 \section{Suspension Model}
 \subsection{Overview}
@@ -284,18 +284,18 @@ For the total response, the initial conditions of the system are all set to zero
 Based on the idealize parameters proposed in Section \ref{sec:paramSelection} , the natural frequency and damping ratio are found as follows: 
 \begin{equation}
 	\begin{split}
-	\omega _{nx} &= \sqrt{\frac{2k}{M}} = \sqrt{\frac{(2)(85000N/m)}{550kg}} = 17.58rad/s = 2.80Hz \\
-	\omega _{n\Theta} &= \sqrt{\frac{2a^2k}{I}} = \sqrt{\frac{(2)(1.3^2m^2)(85000N)}{550kgm^2}} = 22.86rad/s = 3.64Hz 
+	\omega _{nx} &= \sqrt{\frac{2k}{M}} = \sqrt{\frac{(2)(88600N/m)}{550kg}} = 17.95rad/s = 2.86Hz \\
+	\omega _{n\Theta} &= \sqrt{\frac{2a^2k}{I}} = \sqrt{\frac{(2)(1.3^2m^2)(88600N)}{550kgm^2}} = 23.33rad/s = 3.71Hz 
 	\end{split}  
 \end{equation}
 \begin{equation}
 	\begin{split}
 		c_{eqx} &= 2c = (2)(4830Ns/m) = 9660Ns/m \\ 
-		c_{rx} &= 2M\omega _n = (2)(550kg)(17.58rad/s) = 19340Ns/m \\ 
-		\zeta _x& = \frac{c_{eqx}}{c_r} = \frac{9660Ns/m}{19340Ns/m} = 0.50\\
+		c_{rx} &= 2M\omega _n = (2)(550kg)(17.75rad/s) = 19530Ns/m \\ 
+		\zeta _x& = \frac{c_{eqx}}{c_r} = \frac{9660Ns/m}{19530Ns/m} = 0.49\\
 		c_{eq\Theta} &= 2a^2c =  2(1.3^2m^2)(4830Ns/m) = 16330Nms\\
-		c_{r\Theta} &= 2m_{eq}\omega _n = (2)(550kgm^2)(22.86rad/s) = 25150Nms\\ 
-		\zeta _\Theta &= \frac{c_{eq\Theta}}{c_r} = \frac{16330Nms}{ 25150Nms} = 0.65
+		c_{r\Theta} &= 2m_{eq}\omega _n = (2)(550kgm^2)(23.33rad/s) = 25660Nms\\ 
+		\zeta _\Theta &= \frac{c_{eq\Theta}}{c_r} = \frac{16330Nms}{ 25660Nms} = 0.64
 	\end{split}  
 \end{equation}
 Using the MATLAB script shown in Appendix \ref{app:simple}, values for the parameters $I$, $M$, $k$, $c$, and $a$ are substituted into Equations \ref{eq:eomx} and \ref{eq:eomtheta} and the Laplace transform is taken. Solving for $X(s)$ and $\Theta(s)$ and taking the inverse Laplace transform yeilds:

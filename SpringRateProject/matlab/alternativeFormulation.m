@@ -22,8 +22,8 @@ clear all
 
 c1_ = 4830;     % Front damping coefficient (Ns/m)
 c2_ = 4830;     % Rear damping coefficient (Ns/m) 
-k1_ = 650*175.1*cosd(40);    % Front sring rate (N/m) 
-k2_ = 550*175.1*cosd(30);    % Rear sring rate (N/m)
+k1_ = 600*175.1*cosd(35);    % Front sring rate (N/m) 
+k2_ = 500*175.1*cosd(30);    % Rear sring rate (N/m)
 m_ = 550;       % Mass of the vehicle (kg)
 I_ = 550;       % Moment of interial about global x axis (kg*m^2)
 a_ = 1.32;       % Distance from COG to front tire (m)
@@ -122,6 +122,9 @@ xlabel('Frequency (Hz)');
 title('FFT of Impusle Response');
 xlim([0 10]);
 saveas(gcf,'fftImpResp','png');
+
+% --------------------------------- Forces ----------------------------- %
+
 
 % ------------------------------- Simulink ----------------------------- %
 
