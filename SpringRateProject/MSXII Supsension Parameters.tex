@@ -160,16 +160,29 @@ Solving for the outside wheel normal force:
 \end{split}
 \end{equation}
 Note that the 3.44kN above is for both front and rear outside wheels. Assuming the force is evenly split between the front and rear, there is approximately \textbf{1.72kN} of normal force on each outside tire during maximum cornering. 
-\subsubsection{Spring Rate Selection}
-Adding the maximum normal forces from cornering and braking results in 3.59kN. The maximum travel of the suspension for MSXII in compression has been set to 45mm. It is desired that under the combined loading condition of braking and cornering, the suspension compresses to a maximum of 90\% of the travel. As such, the desired spring rate is found to be: 
+\subsubsection{Superposition}
+Both the braking and cornering conditions subject the front outside wheel to a normal force greater than the nominal normal force seen when the car is at rest. The change in normal force for each loading condition can be expressed as follows: 
 \begin{equation}
-	k = \frac{force}{displacement} = \frac{3.59kN}{(70\%)(0.045m)} = 88.6kN/m
+	\begin{split}
+		\Delta F_{N_{braking}} &= F_{Nf_{braking}} - \frac{Mg}{4} =  1.87kN - 1.35kN = 0.52kN\\
+		\Delta F_{N_{cornering}} &=  F_{No_{cornering}} - \frac{Mg}{4} =  1.72kN - 1.35kN = 0.37kN
+	\end{split}
+\end{equation}
+To approximate the worst case loading condition, a superposition of the changes in normal force and the nominal normal force is applied. 
+\begin{equation}
+	F_{N_{max}} = \Delta F_{N_{braking}} + \Delta F_{N_{cornering}} + F_{N_{nominal}} = 0.52kN + 0.37kN + 1.35kN = 2.24kN
+\end{equation}
+
+\subsubsection{Spring Rate Selection}
+The maximum travel of the suspension for MSXII in compression has been set to 45mm. It is desired that under the combined loading condition of braking and cornering, the suspension compresses to a maximum of 55\% of the travel. As such, the desired spring rate is found to be: 
+\begin{equation}
+	k = \frac{force}{displacement} = \frac{2.24kN}{(55\%)(0.045m)} = 88.6kN/m
 \end{equation}
 Note that the above rate assumes a vertical spring. The vertical spring rate can be mapped to an equivalent angled spring rate by dividing by the cosine of the angle that the coilover makes with the vertical direction: 
 \begin{equation}
 	\begin{split}
-		k_{front} &= \frac{88.6}{cos(35)} = 108.2kN \\
-		k_{rear} &= {88.6}{cos(30)} = 102.3kN
+		k_{front} &= \frac{88.6}{cos(35)} = 108.2kN/m \\
+		k_{rear} &= \frac{88.6}{cos(30)} = 102.3kN/m
 	\end{split}
 \end{equation}
 MSXII will be using Ohlins TTX25 MkII coilovers for both the front and rear. These coilovers can be configured to have spring rates from 150 lb/in to 650 lb/in in increments of 50 lb/in. 1 lb/in is approximately 175 N/m therefore 600 lb/in coils should be selected for the front and 600 lb/in coils for the rear. 
