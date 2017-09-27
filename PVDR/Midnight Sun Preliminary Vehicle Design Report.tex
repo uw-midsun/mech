@@ -1,0 +1,67 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage{lipsum}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{geometry}
+\usepackage[nonumberlist, toc]{glossaries}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage[numbered]{./latex/mcode}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage [autostyle, english = american]{csquotes}
+\usepackage{fancyhdr}
+\usepackage{amsmath}
+\usepackage{cite}
+
+% Formatting
+\geometry{letterpaper, portrait, margin=.85in}
+\MakeOuterQuote{"}
+\pagestyle{fancy}
+\lhead{Preliminary Vehicle Design Report}
+\rhead{Midnight Sun Solar Car Team}
+
+\begin{document}
+
+% Title Ppage
+\begin{titlepage}
+	\vspace*{2cm}
+	\centering
+	\includegraphics[width=.25\textwidth]{./images/midnightSunLogoCircle.png}\par
+	\vspace{1.5cm}
+	{\scshape\LARGE Midnight Sun Solar Car Team \par}
+	{\scshape\large University of Waterloo\par}
+	\vspace{2.2cm}
+	{\huge\bfseries Preliminary Vehicle Design Report\par} 
+	\vspace{0.2cm}
+	\large MSXII %
+	\vspace{2.2cm}	
+	\par Prepared by:\par
+	Devon Copeland
+	\today\par
+	\vfill
+	www.uwmidsun.com \par
+	(519) 888-4567 x 32978
+\end{titlepage}
+
+% Main Matter
+\section{Section}
+\subsection{Subsection}
+
+% Bibliography
+\pagebreak
+\bibliography{./latex/bib}{}
+\bibliographystyle{plain}
+
+% Appendix
+\pagebreak
+\appendix
+\section{Sample Appendix}
+\label{app:simple}
+\lstinputlisting[breaklines=true]{./matlab/script.m}
+\end{document}

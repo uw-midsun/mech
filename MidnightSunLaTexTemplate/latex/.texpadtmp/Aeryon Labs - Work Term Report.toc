@@ -1,0 +1,33 @@
+\contentsline {section}{List of Figures}{iv}
+\contentsline {section}{List of Tables}{v}
+\contentsline {section}{\numberline {1} \phantom {}Summary}{1}
+\contentsline {section}{\numberline {2} \phantom {}Introduction}{2}
+\contentsline {section}{\numberline {3} \phantom {}Equipment}{4}
+\contentsline {subsection}{\numberline {3.1} \phantom {}Data Acquisition (\gls {daq})}{4}
+\contentsline {subsection}{\numberline {3.2} \phantom {}Power Electronics}{4}
+\contentsline {subsection}{\numberline {3.3} \phantom {}Power Electronics}{4}
+\contentsline {subsection}{\numberline {3.4} \phantom {}Thrust Jig}{5}
+\contentsline {subsection}{\numberline {3.5} \phantom {}Dynamometer}{5}
+\contentsline {section}{\numberline {4} \phantom {}Methods}{6}
+\contentsline {subsection}{\numberline {4.1} \phantom {}Filtering Collected Data}{6}
+\contentsline {subsection}{\numberline {4.2} \phantom {}Atmospheric Compensation}{6}
+\contentsline {subsection}{\numberline {4.3} \phantom {}3D Projection}{6}
+\contentsline {subsection}{\numberline {4.4} \phantom {}Method for Evaluating the Model}{6}
+\contentsline {section}{\numberline {5} \phantom {}Results}{7}
+\contentsline {subsection}{\numberline {5.1} \phantom {}Motor and Propeller Test Candidates}{7}
+\contentsline {subsection}{\numberline {5.2} \phantom {}Motor Characterization}{7}
+\contentsline {subsection}{\numberline {5.3} \phantom {}Predicting Propulsion System Efficiency}{7}
+\contentsline {subsection}{\numberline {5.4} \phantom {}Comparison to Manufacturer Data}{7}
+\contentsline {section}{\numberline {6} \phantom {}Discussion and Interpretation}{8}
+\contentsline {subsection}{\numberline {6.1} \phantom {}Uncertainty in the Instrumentation}{8}
+\contentsline {subsection}{\numberline {6.2} \phantom {}Evaluating the Model}{8}
+\contentsline {section}{\numberline {7} \phantom {}Conclusion}{9}
+\contentsline {subsection}{\numberline {7.1} \phantom {}Equipment}{9}
+\contentsline {subsection}{\numberline {7.2} \phantom {}Numerical Methods}{9}
+\contentsline {subsection}{\numberline {7.3} \phantom {}Manufacturer Data}{9}
+\contentsline {section}{\numberline {8} \phantom {}Recommendations}{10}
+\contentsline {subsection}{\numberline {8.1} \phantom {}Equipment}{10}
+\contentsline {subsection}{\numberline {8.2} \phantom {}Numerical Methods}{10}
+\contentsline {section}{{References}}{11}
+\contentsline {section}{Glossary}{12}
+\contentsline {section}{\numberline {A} \phantom {}Appendix A}{13}
