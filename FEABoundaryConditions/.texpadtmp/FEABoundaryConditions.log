@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  28 SEP 2017 11:00
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  14 OCT 2017 15:49
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -501,7 +501,17 @@ Package csquotes Info: ... none found.
 Package csquotes Warning: No multilingual support.
 (csquotes)                Cannot enable multilingual quotes on input line 31.
 
-(/Users/devon/Documents/Waterloo/midSun/MechGitRepo/FEABoundaryConditions/.texpadtmp/FEABoundaryConditions.aux)
+(/Users/devon/Documents/Waterloo/midSun/MechGitRepo/FEABoundaryConditions/.texpadtmp/FEABoundaryConditions.aux
+
+LaTeX Warning: Label `tab:summary' multiply defined.
+
+
+LaTeX Warning: Label `tab:summary' multiply defined.
+
+
+LaTeX Warning: Label `tab:summary' multiply defined.
+
+)
 \openout1 = `FEABoundaryConditions.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 31.
@@ -643,7 +653,7 @@ File: ./LaTex/brakingFBD.jpg Graphic file (type jpg)
  <use ./LaTex/brakingFBD.jpg>
 Package pdftex.def Info: ./LaTex/brakingFBD.jpg used on input line 113.
 (pdftex.def)             Requested size: 245.71756pt x 164.37224pt.
- [2 <./LaTex/frontIso.PNG> <./LaTex/rearIso.PNG> <./LaTex/rearRight.PNG> <./LaTex/brakingFBD.jpg>] <./LaTex/dynamicScrutineering.PNG, id=33, 341.275pt x 196.735pt>
+ [2 <./LaTex/frontIso.PNG> <./LaTex/rearIso.PNG> <./LaTex/rearRight.PNG> <./LaTex/brakingFBD.jpg>] <./LaTex/dynamicScrutineering.PNG, id=32, 341.275pt x 196.735pt>
 File: ./LaTex/dynamicScrutineering.PNG Graphic file (type png)
  <use ./LaTex/dynamicScrutineering.PNG>
 Package pdftex.def Info: ./LaTex/dynamicScrutineering.PNG used on input line 174.
@@ -652,27 +662,27 @@ Package pdftex.def Info: ./LaTex/dynamicScrutineering.PNG used on input line 174
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[3] <./LaTex/hw1.PNG, id=38, 628.3475pt x 539.01375pt>
+[3] <./LaTex/hw1.PNG, id=37, 628.3475pt x 539.01375pt>
 File: ./LaTex/hw1.PNG Graphic file (type png)
  <use ./LaTex/hw1.PNG>
 Package pdftex.def Info: ./LaTex/hw1.PNG used on input line 191.
 (pdftex.def)             Requested size: 149.25325pt x 128.0374pt.
- <./LaTex/hw2.PNG, id=39, 919.435pt x 687.56876pt>
+ <./LaTex/hw2.PNG, id=38, 919.435pt x 687.56876pt>
 File: ./LaTex/hw2.PNG Graphic file (type png)
  <use ./LaTex/hw2.PNG>
 Package pdftex.def Info: ./LaTex/hw2.PNG used on input line 196.
 (pdftex.def)             Requested size: 171.21516pt x 128.0374pt.
- <./LaTex/hw3.PNG, id=40, 540.0175pt x 469.755pt>
+ <./LaTex/hw3.PNG, id=39, 540.0175pt x 469.755pt>
 File: ./LaTex/hw3.PNG Graphic file (type png)
  <use ./LaTex/hw3.PNG>
 Package pdftex.def Info: ./LaTex/hw3.PNG used on input line 203.
 (pdftex.def)             Requested size: 147.18274pt x 128.0374pt.
- <./LaTex/speedLimit.PNG, id=41, 629.35126pt x 584.1825pt>
+ <./LaTex/speedLimit.PNG, id=40, 629.35126pt x 584.1825pt>
 File: ./LaTex/speedLimit.PNG Graphic file (type png)
  <use ./LaTex/speedLimit.PNG>
 Package pdftex.def Info: ./LaTex/speedLimit.PNG used on input line 208.
 (pdftex.def)             Requested size: 137.93913pt x 128.0374pt.
- <./LaTex/steerFBD.jpg, id=42, 1108.14pt x 803.0pt>
+ <./LaTex/steerFBD.jpg, id=41, 1108.14pt x 803.0pt>
 File: ./LaTex/steerFBD.jpg Graphic file (type jpg)
  <use ./LaTex/steerFBD.jpg>
 Package pdftex.def Info: ./LaTex/steerFBD.jpg used on input line 222.
@@ -683,23 +693,39 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [4 <./LaTex/dynamicScrutineering.PNG>] [5 <./LaTex/hw1.PNG> <./LaTex/hw2.PNG> <./LaTex/hw3.PNG> <./LaTex/speedLimit.PNG> <./LaTex/steerFBD.jpg>]
 
-LaTeX Warning: Reference `tab:forcesSummary' on page 6 undefined on input line 268.
+LaTeX Warning: Reference `tab:forcesSummary' on page 6 undefined on input line 276.
 
-<./LaTex/frontIsoForces.PNG, id=54, 769.87625pt x 911.405pt>
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<./LaTex/frontIsoForces.PNG, id=53, 769.87625pt x 911.405pt>
 File: ./LaTex/frontIsoForces.PNG Graphic file (type png)
  <use ./LaTex/frontIsoForces.PNG>
-Package pdftex.def Info: ./LaTex/frontIsoForces.PNG used on input line 288.
+Package pdftex.def Info: ./LaTex/frontIsoForces.PNG used on input line 328.
 (pdftex.def)             Requested size: 216.3157pt x 256.0748pt.
- <./LaTex/rearIsoForces.PNG, id=55, 770.88pt x 916.42375pt>
+ <./LaTex/rearIsoForces.PNG, id=54, 770.88pt x 916.42375pt>
 File: ./LaTex/rearIsoForces.PNG Graphic file (type png)
  <use ./LaTex/rearIsoForces.PNG>
-Package pdftex.def Info: ./LaTex/rearIsoForces.PNG used on input line 293.
+Package pdftex.def Info: ./LaTex/rearIsoForces.PNG used on input line 333.
 (pdftex.def)             Requested size: 215.39795pt x 256.0748pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[6] [7 <./LaTex/frontIsoForces.PNG> <./LaTex/rearIsoForces.PNG>] (/Users/devon/Documents/Waterloo/midSun/MechGitRepo/FEABoundaryConditions/.texpadtmp/FEABoundaryConditions.bbl
+[6]
+
+LaTeX Warning: Text page 7 contains only floats.
+
+[7 <./LaTex/frontIsoForces.PNG> <./LaTex/rearIsoForces.PNG>] [8] (/Users/devon/Documents/Waterloo/midSun/MechGitRepo/FEABoundaryConditions/.texpadtmp/FEABoundaryConditions.bbl
 Underfull \hbox (badness 10000) in paragraph at lines 4--8
 []\OT1/cmr/m/n/12 American So-lar Chal-lenge.  2018 reg-u-la-tions, [on-line], 2017.
  []
@@ -709,13 +735,8 @@ Underfull \hbox (badness 10000) in paragraph at lines 4--8
 \OT1/cmr/m/n/12 http://americansolarchallenge.org/ASC/wp-content/uploads/2016/08/ASC2018-Regs-
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 10--15
-\OT1/cmr/m/n/12 [on-line], 2002.  http://vignette1.wikia.nocookie.net/solarcar/images/c/c3/NGM[]SC-
- []
-
-) [8]
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 314.
+) [9]
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 354.
  (/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 ) (./matlab/alternativeFormulation.m
@@ -723,33 +744,36 @@ Missing character: There is no © in font pcrr7t!
 LaTeX Font Info:    Try loading font information for TS1+pcr on input line 17.
  (/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/ts1pcr.fd
 File: ts1pcr.fd 2001/06/04 font definitions for TS1/pcr.
-) [9]
+) [10]
 LaTeX Font Info:    Try loading font information for OMS+pcr on input line 74.
  (/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/omspcr.fd
 File: omspcr.fd 
 )
 LaTeX Font Info:    Font shape `OMS/pcr/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 74.
- [10]) [11] (./matlab/simplifiedFormulation.m
+ [11]) [12] (./matlab/simplifiedFormulation.m
 Missing character: There is no © in font pcrr7t!
- [12]) [13] (/Users/devon/Documents/Waterloo/midSun/MechGitRepo/FEABoundaryConditions/.texpadtmp/FEABoundaryConditions.aux)
+ [13]) [14] (/Users/devon/Documents/Waterloo/midSun/MechGitRepo/FEABoundaryConditions/.texpadtmp/FEABoundaryConditions.aux)
 
 LaTeX Warning: There were undefined references.
 
+
+LaTeX Warning: There were multiply-defined labels.
+
  ) 
 Here is how much of TeX's memory you used:
- 11493 strings out of 492995
- 172581 string characters out of 6132704
- 589224 words of memory out of 5000000
- 14794 multiletter control sequences out of 15000+600000
+ 11492 strings out of 492995
+ 172576 string characters out of 6132704
+ 589261 words of memory out of 5000000
+ 14793 multiletter control sequences out of 15000+600000
  11748 words of font info for 42 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  53i,17n,92p,1955b,1667s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb>
-Output written on /Users/devon/Documents/Waterloo/midSun/MechGitRepo/FEABoundaryConditions/.texpadtmp/FEABoundaryConditions.pdf (14 pages, 5529439 bytes).
+Output written on /Users/devon/Documents/Waterloo/midSun/MechGitRepo/FEABoundaryConditions/.texpadtmp/FEABoundaryConditions.pdf (15 pages, 5530788 bytes).
 PDF statistics:
- 128 PDF objects out of 1000 (max. 8388607)
- 74 compressed objects within 1 object stream
+ 131 PDF objects out of 1000 (max. 8388607)
+ 76 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  66 words of extra memory for PDF output out of 10000 (max. 10000000)
 

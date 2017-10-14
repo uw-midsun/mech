@@ -114,9 +114,9 @@ Assuming a smooth driving surface, the largest normal force acting on the front 
 	\caption{Free Body Diagram of a Car Braking}
 	\label{fig:barkingFBD}
 \end{figure}
-Figure \ref{fig:barkingFBD} shows a free body diagram of a half car model undergoing braking. MSXII will only have brake callipers on the front wheels however regenerative braking from the hub motors will also provide a braking force at the rear contact patches. Assuming a generous coefficient of static friction, $\mu _s$, of 1.0 and the extreme case where the both the font and rear tires are about to begin sliding, the combined braking force can be expressed as: 
+Figure \ref{fig:barkingFBD} shows a free body diagram of a half car model undergoing braking. MSXII will only have brake callipers on the front wheels however regenerative braking from the hub motors will also provide a braking force at the rear contact patches. Assuming the maximum braking condition stipulated in the ASC 2018 regulations where the vehicle decelerates at 1G using only the mechanical breaks, the required braking force can be approximated as follows: 
 \begin{equation}
-	F_{braking} = F_{Nf} + F_{Nr} = \mu _s F_{N_{net}} =  \mu _s Mg = (1.0)(550kg)\left(9.81\frac{m}{s^2}\right) = 5.40kN
+	F_{braking} = F_{Nf} + F_{Nr} = Mg = (550kg)\left(9.81\frac{m}{s^2}\right) = 5.40kN
 \end{equation}
 From Figure \ref{fig:barkingFBD}, summing the moments about the centre of gravity and the vertical forces results in the following equations: 
 \begin{equation}
@@ -135,7 +135,7 @@ Solving for the front normal force:
 Note that 3.74kN is for both front wheels. Therefore there is approximately \textbf{1.87kN} of normal force on each front tire during hard braking. 
 
 \subsection{Maximum acceleration}
-MSXII will use SCM-150s which have a peak torque of 135Nm, however from the manufacturer provided torque speed curves, a more reasonable upper limit to for peak torque sustainable as the car accelerates is approximately 100Nm \cite{scm}. From this torque value and a number of other vehicle parameters the vehicle's maximum acceleration can be calculated as follows: 
+MSXII will use SCM-150s which have a peak torque of 135Nm. From this torque value and a number of other vehicle parameters the vehicle's maximum acceleration can be calculated as follows: 
 
 \begin{equation}
 	a = \frac{F_w}{\frac{1}{2}M}
@@ -152,21 +152,21 @@ Rearranging the above three equations, the acceleration of the vehicle can be ex
 \begin{equation}
 \begin{split}
 	a &= \frac{T_m r}{\frac{1}{2}Mr^2 + J_w} \\
-	a &= \frac{(100Nm)(0.27m)}{\frac{1}{2}(550kg)(0.27m^2)^2 + 0.25kgm^2} = 1.33m/s^2
+	a &= \frac{(135Nm)(0.27m)}{\frac{1}{2}(550kg)(0.27m^2)^2 + 0.25kgm^2} = 1.80m/s^2
 \end{split}
 \end{equation}
 Solving for friction force on a single rear tire: 
 \begin{equation}
-	F_w = Ma = (550kg)(1.33m/s^2) = 732N
+	F_w = Ma = (550kg)(1.80m/s^2) = 990N
 \end{equation}
 Using the same approach as demonstrated in section \ref{sec:hardBraking}, the resulting normal force on the rear wheels can be calculated as follows: 
 \begin{equation}
 \begin{split}
 	bF_{Nr} &= hF_{w} + a(Mg - F_{Nr})\\
-	F_{Nr} &= \frac{hF_{w} + aMg}{a+b} = \frac{(0.52m)(732N)+(1.32m)(550kg)\left(9.81\frac{m}{s^2}\right)}{(1.32m)+(1.28m)} = 2.89kN
+	F_{Nr} &= \frac{hF_{w} + aMg}{a+b} = \frac{(0.52m)(990N)+(1.32m)(550kg)\left(9.81\frac{m}{s^2}\right)}{(1.32m)+(1.28m)} = 2.94kN
 \end{split}
 \end{equation}
-Note that 2.88kN is for both rear wheels. Therefore there is approximately \textbf{1.44kN} of normal force on each rear tire during maximum acceleration.
+Note that 2.94kN is for both rear wheels. Therefore there is approximately \textbf{1.47kN} of normal force on each rear tire during maximum acceleration.
 
 \subsubsection{Cornering}
 \begin{figure}[h!]
@@ -210,12 +210,12 @@ For the first scenario, the ASC 2018 regulations stipulate that a vehicle must b
     \caption{Highway Exist Around the University of Waterloo}
 	\label{fig:highwayExits}
 \end{figure}
-For the second scenario, the diameter of several highway exit ramps around the University of Waterloo were measured as shown in Figure \ref{fig:highwayExits}. The recommended speed limit on these exits 50$km/hr$. Assuming a worst case scenario where the vehicle takes an exit with a 100$m$ diameter at 60$km/hr$ (16.67$m/s$), required lateral force required to navigate this corner can be found as follows: 
+For the second scenario, the diameter of several highway exit ramps around the University of Waterloo were measured as shown in Figure \ref{fig:highwayExits}. The recommended speed limit on these exits 50$km/hr$. Assuming a worst case scenario where the vehicle takes an exit with a 100$m$ diameter at 80$km/hr$ (22.22$m/s$), required lateral force required to navigate this corner can be found as follows: 
 \begin{equation}
-	F_{steer} = \frac{Mv^2}{r} = \frac{(550kg)(16.67m/s)^2}{50m} = 3.06kN
+	F_{steer} = \frac{Mv^2}{r} = \frac{(550kg)(22.22m/s)^2}{50m} = 5.43kN
 \end{equation}
 
-Since the lateral force required in the second scenario is highest, 3.06kN will be used as the worst case cornering force. 
+Since the lateral force required in the second scenario is highest, 5.34kN will be used as the worst case cornering force. Note that this value corresponds with 1G of cornering force. 
 
 \begin{figure}[h!]
 	\centering
@@ -235,32 +235,40 @@ Solving for the outside wheel normal force:
 \begin{equation}
 \begin{split}
 	\frac{track}{2}F_{No} &= hF_{steer} + \frac{track}{2}(Mg - F_{Ni})\\
-	F_{No} &= \frac{hF_{steer} + \frac{track}{2}Mg}{track} = \frac{(0.52m)(3.06kN)+(0.80m)(550kg)\left(9.81\frac{m}{s^2}\right)}{1.60m} = 3.69kN
+	F_{No} &= \frac{hF_{steer} + \frac{track}{2}Mg}{track} = \frac{(0.52m)(5.43kN)+(0.80m)(550kg)\left(9.81\frac{m}{s^2}\right)}{1.60m} = 4.46kN
 \end{split}
 \end{equation}
 Solving for the inside wheel normal force: 
 \begin{equation}
-	F_{Ni} = Mg - F_{No} = (550kg)\left(9.81\frac{m}{s^2}\right) - 3.69kN = 1.71kN
+	F_{Ni} = Mg - F_{No} = (550kg)\left(9.81\frac{m}{s^2}\right) - 4.46kN = 0.93kN
 \end{equation}
-Note that the forces above are for both front and rear outside wheels. Assuming the force is evenly split between the front and rear, there is approximately \textbf{1.85kN} of normal force on each outside tire and \textbf{0.85kN} for each inside tire during maximum cornering.
+Note that the forces above are for both front and rear outside wheels. Assuming the force is evenly split between the front and rear, there is approximately \textbf{2.23kN} of normal force on each outside tire and \textbf{0.47kN} for each inside tire during maximum cornering.
+ 
+\subsection{Bump}
+As stipulated in the ASC 2018 regulations, the analysis for suspension and steering must include loading considerations for a 2G bump. Assuming this requirement is interpreted as the body of the vehicle accelerating upwards at 2G, the additional normal force subjected to a single tire can be expressed as follows: 
+
+\begin{equation}
+	F_{N_{bump}} = \frac{2GM}{4} = \frac{2(9.81\frac{m}{s^2})(550kg)}{4} = 2.70kN
+\end{equation} 
  
 \subsection{Superposition}
 The braking accelerating and cornering conditions subject the wheels to normal forces that differ from those seen when the car is at rest. The change in normal force for each loading condition can be expressed as follows: 
 \begin{equation}
 	\begin{split}
 		\Delta F_{Nf_{braking}} &= F_{Nf_{braking}} - \frac{Mg}{4} =  1.87kN - 1.35kN = 0.52kN\\
-		\Delta F_{Nr_{accelerating}} &= F_{Nf_{braking}} - \frac{Mg}{4} =  1.44kN - 1.35kN = 0.09kN\\
-		\Delta F_{No_{cornering}} &=  F_{No_{cornering}} - \frac{Mg}{4} =  1.85kN - 1.35kN = 0.50kN \\
-		\Delta F_{Ni_{cornering}} &=  F_{No_{cornering}} - \frac{Mg}{4} =  0.85kN - 1.35kN = -0.50kN
+		\Delta F_{Nr_{accelerating}} &= F_{Nf_{braking}} - \frac{Mg}{4} =  1.47kN - 1.35kN = 0.12kN\\
+		\Delta F_{No_{cornering}} &=  F_{No_{cornering}} - \frac{Mg}{4} =  2.23kN - 1.35kN = 0.88kN\\
+		\Delta F_{Ni_{cornering}} &=  F_{No_{cornering}} - \frac{Mg}{4} =  0.47kN - 1.35kN = -0.88kN\\
+		\Delta F_{N_{bump}} &= F_{N_{bump}} - \frac{Mg}{4} =  2.70kN - 1.35kN = 1.35kN
 	\end{split}
 \end{equation}
-To approximate the worst case loading condition, a superposition of the changes in normal force and the nominal normal force is applied. Note that the nominal force used is the same for each wheel which assumes a centre of gravity approximately centred along the wheelbase.   
+To approximate the worst case loading condition, a superposition of the changes in normal force and the nominal normal force is applied. Note that the nominal force used is the same for each wheel which assumes a centre of gravity approximately centred along the wheelbase.
 \begin{equation}
 	\begin{split}	
-	F_{Nfi_{max}} = \Delta F_{Nf_{braking}} + \Delta F_{Ni_{cornering}} + F_{N_{nominal}} = 0.52kN - 0.50kN + 1.35kN = 1.24kN \\
-	F_{Nfo_{max}} = \Delta F_{Nf_{braking}} + \Delta F_{No_{cornering}} + F_{N_{nominal}} = 0.52kN + 0.50kN + 1.35kN = 2.37kN \\
-	F_{Nri_{max}} = \Delta F_{Nr_{braking}} + \Delta F_{Ni_{cornering}} + F_{N_{nominal}} = 0.09kN - 0.50kN + 1.35kN = 0.94kN \\
-	F_{Nro_{max}} = \Delta F_{Nr_{braking}} + \Delta F_{No_{cornering}} + F_{N_{nominal}} = 0.09kN + 0.50kN + 1.35kN = 1.94kN 
+	F_{Nfi_{max}} = \Delta F_{Nf_{braking}} + \Delta F_{Ni_{cornering}} + 2F_{N_{nominal}} = 0.52kN - 0.88kN + 2.70kN = 2.34kN \\
+	F_{Nfo_{max}} = \Delta F_{Nf_{braking}} + \Delta F_{No_{cornering}} + 2F_{N_{nominal}} = 0.52kN + 0.88kN + 2.70kN = 4.10kN \\
+	F_{Nri_{max}} = \Delta F_{Nr_{braking}} + \Delta F_{Ni_{cornering}} + 2F_{N_{nominal}} = 0.12kN - 0.88kN + 2.70kN = 1.94kN \\
+	F_{Nro_{max}} = \Delta F_{Nr_{braking}} + \Delta F_{No_{cornering}} + 2F_{N_{nominal}} = 0.12kN + 0.88kN + 2.70kN = 3.70kN 
 	\end{split}
 \end{equation}
 
@@ -269,14 +277,46 @@ Table \ref{tab:forcesSummary} summarizes the loading conditions used for static 
 
 \begin{table}[h!]
 \centering
-\caption{Summary of Suspension Loading Conditions}
+\caption{Summary of Worst Case Loading Conditions}
 \label{tab:summary}
 \begin{tabular}{llll}
-\textbf{Case}                                  & \textbf{Fx (kN)} & \textbf{Fy (kN)} & \textbf{Fz (kN)} \\
-Braking \& Cornering (Inside Front Wheel)      & 1.53             & 1.24             & 2.70             \\
-Braking \& Cornering (Outside Front Wheel)     & -1.53            & 2.37             & 2.70             \\
-Accelerating \& Cornering (Inside Rear Wheel)  & 1.53             & 0.94             & 0.73             \\
-Accelerating \& Cornering (Outside Rear Wheel) & -1.53            & 1.94             & 0.73            
+\textbf{Worst Case Loading}  			       & \textbf{Fx (kN)} & \textbf{Fy (kN)} & \textbf{Fz (kN)} \\
+Braking \& Cornering (Inside Front Wheel)      & 2.72             & 2.34             & 2.70             \\
+Braking \& Cornering (Outside Front Wheel)     & -2.72            & 4.10             & 2.70             \\
+Accelerating \& Cornering (Inside Rear Wheel)  & 2.72             & 1.94             & 0.99             \\
+Accelerating \& Cornering (Outside Rear Wheel) & -2.72            & 3.70             & 0.99            
+\end{tabular}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\caption{Summary of Bump Loading Conditons}
+\label{tab:summary}
+\begin{tabular}{llll}
+\textbf{Bump Loading Conditions}  			    & \textbf{Fx (kN)} & \textbf{Fy (kN)} & \textbf{Fz (kN)} \\
+All wheels										& 0.00            & 2.70             & 0.00            
+\end{tabular}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\caption{Summary of Braking and Accelerating Loading Conditions}
+\label{tab:summary}
+\begin{tabular}{llll}
+\textbf{Braking and Accelerating}  			       & \textbf{Fx (kN)} & \textbf{Fy (kN)} & \textbf{Fz (kN)} \\
+Braking (Front Wheels)      					   & 0.00             & 1.87             & 2.70             \\
+Accelerating (Rear Wheel)  					   & 0.00             & 1.44             & 0.99             \\
+\end{tabular}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\caption{Summary of Cornering Loading Conditions}
+\label{tab:summary}
+\begin{tabular}{llll}
+\textbf{Cornering Loading}  			       & \textbf{Fx (kN)} & \textbf{Fy (kN)} & \textbf{Fz (kN)} \\
+Inside Wheel     						   & 2.72             & 0.47             & 0.00             \\
+Outside Wheel   						   & -2.72            & 2.23             & 0.00             \\
 \end{tabular}
 \end{table}
 
