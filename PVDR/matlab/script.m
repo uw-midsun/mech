@@ -4,7 +4,7 @@
 % Description
 % Author: FirstName LastName
 % 
-% � Midnight Sun 2017
+% Midnight Sun 2017
 %
 %
 % Notes:
