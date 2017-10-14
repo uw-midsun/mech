@@ -1,0 +1,9 @@
+*.swp
+*.aux
+*.bcf
+*.lof
+*.log
+*.lot
+*.out
+*.run.xml
+*.toc
