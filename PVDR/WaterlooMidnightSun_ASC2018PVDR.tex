@@ -66,38 +66,39 @@
 \section{History}
 Midnight Sun was founded in 1988 at the University of Waterloo. The team has produced 11 solar-powered vehicles since its inception, numbered MSI through MSXI. MSX and its predecessors have been traditional Challenger class cars. MSXI was the team's first attempt at a Cruiser class vehicle, which ultimately suffered from design issues relating to its monocoque design. With MSXII, the team has regrouped and designed a new Cruiser vehicle from the gound up, focussing strongly on reliability, safety, and manufacturability.
 
-\section{Mechanical}
-\subsection{Contacts}
-Questions regarding the mechanical design and implementation of MSXII should be directed to one of the following contacts:
+\section{Contacts}
+Questions regarding the design and implementation of MSXII should be directed to one of the following contacts:
 
 \begin{table}[!h]
 \centering
 \begin{tabular}{llll}
 \toprule
 Name            & Title               & Phone        & Email \\
-\midrule        
+\midrule
 Tak Alguire     & Project Manager     & 519-574-4610 & tak.alguire@uwmidsun.com \\
 Minghao Ji      & Engineering Manager & 519-500-1292 & minghao.ji@uwmidsun.com \\
 Devon Copeland  & Mechanical Lead     & 226-792-7383 & devon.copeland@uwmidsun.com \\
+Titus Chow      & Electrical Lead     & 226-978-7104 & titus.chow@uwmidsun.com \\
 \bottomrule
 \end{tabular}
 \end{table}
 
+\section{Mechanical}
 \subsection{Overview}
-MSXII is a dual-occupant Cruiser class vehicle. Its structural design uses a steel alloy tube chassis with non-structural fibreglass body panels. The majority of the vehicle's powertrain systems are located behind the occupant cell, including the battery pack, power junction box, motor controllers, and EV charger. The vehicle is rear-wheel driven by two hub-mounted DC motors. The locations of these components are marked in Figure \ref{fig:msxii-top-view} and Figure \ref{fig:msxii-side-view}. Major vehicle dimensions are summarized in Table \ref{tab:msxii-dimensions}.
+MSXII is a dual-occupant Cruiser class vehicle. Its structural design uses a steel alloy tube chassis with non-structural fibreglass body panels. The majority of the vehicle's powertrain systems are located behind the occupant cell, including the battery pack, power junction box, motor controllers, and EV charger. The vehicle is rear-wheel driven by two hub-mounted DC motors. The locations of these components are marked in Figure \ref{fig:msxii-top-view-annotated} and Figure \ref{fig:msxii-side-view-annotated}. Major vehicle parameters are summarized in Table \ref{tab:msxii-dimensions}.
 
 \begin{figure}
 \centering
-%\includegraphics{figures/msxii-top-view}
+\includegraphics[width=\textwidth]{figures/msxii-top-view-annotated}
 \caption{Top view showing major dimensions and system positions}
-\label{fig:msxii-top-view}
+\label{fig:msxii-top-view-annotated}
 \end{figure}
 
 \begin{figure}
 \centering
-%\includegraphics{figures/msxii-side-view}
+\includegraphics[width=\textwidth]{figures/msxii-side-view-annotated}
 \caption{Side view showing major dimensions and system positions}
-\label{fig:msxii-side-view}
+\label{fig:msxii-side-view-annotated}
 \end{figure}
 
 \begin{table}
@@ -106,11 +107,12 @@ MSXII is a dual-occupant Cruiser class vehicle. Its structural design uses a ste
 \toprule
 Parameter & Value \\
 \midrule
-Wheelbase    & \SI{2.60}{\metre} \\
-Track        & \SI{1.60}{\metre} \\
-Total length & TODO              \\
-Total width  & TODO              \\
-Height       & TODO              \\
+Wheelbase    & \SI{2.60}{\metre}    \\
+Track        & \SI{1.60}{\metre}    \\
+Max length   & \SI{4.68}{\metre}    \\
+Max width    & \SI{2.02}{\metre}    \\
+Max height   & \SI{1.23}{\metre}    \\
+Gross weight & \SI{550}{\kilo\gram} \\
 \bottomrule
 \end{tabular}
 \caption{Table of major vehicle dimensions}
@@ -123,19 +125,19 @@ The chassis is a tube structure enclosing the occupant cell with small front and
 
 \begin{figure}
 \centering
-%\includegraphics{figures/chassis-front}
+\includegraphics[width=0.75\textwidth]{figures/chassis-front}
 \caption{Chassis, front view}
 \label{fig:chassis-front}
 \end{figure}
 \begin{figure}
 \centering
-%\includegraphics{figures/chassis-top}
+\includegraphics[width=0.9\textwidth]{figures/chassis-top}
 \caption{Chassis, top view}
 \label{fig:chassis-top}
 \end{figure}
 \begin{figure}
 \centering
-%\includegraphics{figures/chassis-side}
+\includegraphics[width=\textwidth]{figures/chassis-side}
 \caption{Chassis, side view}
 \label{fig:chassis-side}
 \end{figure}
@@ -145,8 +147,8 @@ Bending, cutting, and profiling of tubes was done by an external supplier. Weldi
 
 \begin{figure}
 \centering
-%\includegraphics{figures/welding-jig}
-\caption{Welding jig under construction}
+\includegraphics[width=0.75\textwidth]{figures/welding-jig}
+\caption{Welding jig on rotating mount}
 \label{fig:welding-jig}
 \end{figure}
 
@@ -155,7 +157,7 @@ The roll cage is integrated into the design of the chassis members enclosing the
 
 \begin{figure}
 \centering
-%\includegraphics{figures/roll-cage}
+\includegraphics[width=0.75\textwidth]{figures/roll-cage}
 \caption{Chassis with roll cage elements highlighted}
 \label{fig:roll-cage}
 \end{figure}
@@ -166,28 +168,28 @@ MSXII is equipped with 5-point seat belts for both occupants. Seat belt hardpoin
 
 \begin{figure}
 \centering
-%\includegraphics{figures/seat-belt-tab-positions}
+\includegraphics[width=0.75\textwidth]{figures/seat-belt-tab-positions}
 \caption{Chassis mounting points for seat belts}
 \label{fig:seat-belt-tab-positions}
 \end{figure}
 
 \begin{figure}
 \centering
-%\includegraphics{figures/seat-belt-tab}
+\includegraphics[width=0.75\textwidth]{figures/seat-belt-tab}
 \caption{Single seat belt tab}
 \label{fig:seat-belt-tab}
 \end{figure}
 
 \begin{figure}
 \centering
-%\includegraphics{figures/seat-belt-side-view}
+\includegraphics[width=0.75\textwidth]{figures/seat-belt-side-view}
 \caption{Side view of seat belt geometry}
 \label{fig:seat-belt-side-view}
 \end{figure}
 
 \begin{figure}
 \centering
-%\includegraphics{figures/seat-belt-top-view}
+\includegraphics[width=0.75\textwidth]{figures/seat-belt-top-view}
 \caption{Top view of seat belt geometry}
 \label{fig:seat-belt-top-view}
 \end{figure}
@@ -198,7 +200,7 @@ The primary braking system is designed with dual redundant front braking, consis
 
 \begin{figure}
 \centering
-%\includegraphics{figures/primary-brakes-schematic}
+%\includegraphics[width=\textwidth]{figures/primary-brakes-schematic}
 \caption{Schematic of primary braking system}
 \label{fig:primary-brakes-schematic}
 \end{figure}
@@ -216,7 +218,7 @@ Figure \ref{fig:calipers-mounting-geometry} shows a front suspension upright wit
 
 \begin{figure}
 \centering
-%\includegraphics{figures/caliper-mounting-geometry}
+\includegraphics[width=0.5\textwidth]{figures/caliper-mounting-geometry}
 \caption{View of dual-primary and parking calipers on front suspension upright }
 \label{fig:calipers-mounting-geometry}
 \end{figure}
@@ -224,13 +226,13 @@ Figure \ref{fig:calipers-mounting-geometry} shows a front suspension upright wit
 \subsection{Steering System}
 The steering system uses a rear-steering, left-hand-drive rack and pinion from Helix (part number \href{http://www.helixsuspension.com/catalog/Steering/Manual-Steering-Racks/HEXSR5/Omni-Manual-Steering-Rack---Rear-Steering}{188754}). 
 
-The system uses a collapsible steering column from Sweet Mfg.\@, part number \href{https://sweetmfg.biz/product.php?productid=2836}{405-10310}. The steering system linkage uses multiple U-joints and is shown in Figure \ref{fig:steering-system}.
+The system uses a collapsible steering column from Sweet Mfg.\@, part number \href{https://sweetmfg.biz/product.php?productid=2836}{405-10310}. The steering system linkage uses multiple U-joints and is shown in Figure \ref{fig:steering-assembly}.
 
 \begin{figure}
 \centering
-%\includegraphics{figures/steering-system}
+\includegraphics[width=0.75\textwidth]{figures/steering-assembly}
 \caption{View of linkage from steering column to rack and pinion}
-\label{fig:steering-system}
+\label{fig:steering-assembly}
 \end{figure}
 
 \subsection{Suspension}
@@ -239,8 +241,8 @@ The front suspension uses dual A-arms with an outboard dampener and coilover spr
 
 \begin{figure}
 \centering
-%\includegraphics{figures/front-suspension}
-\caption{View of front suspension assembly}
+\includegraphics[width=0.75\textwidth]{figures/front-suspension}
+\caption{View of front suspension assembly (parking brake obstructed by hub)}
 \label{fig:front-suspension}
 \end{figure}
 
@@ -251,7 +253,7 @@ The rear suspension uses independent trailing arms mounted outwards from the rea
 
 \begin{figure}
 \centering
-%\includegraphics{figures/rear-suspension}
+\includegraphics[width=0.75\textwidth]{figures/rear-suspension}
 \caption{View of rear suspension assembly}
 \label{fig:rear-suspension}
 \end{figure}
@@ -269,29 +271,12 @@ FEA of suspension and steering components was done using ANSYS software. The spe
 
 \clearpage
 \section{Electrical}
-
-\subsection{Contacts}
-Questions regarding the electrical design and implementation of MSXII should be directed to one of the following contacts:
-
-\begin{table}[!h]
-\centering
-\begin{tabular}{llll}
-\toprule
-Name        & Title               & Phone        & Email \\
-\midrule
-Tak Alguire & Project Manager     & 519-574-4610 & tak.alguire@uwmidsun.com \\
-Minghao Ji  & Engineering Manager & 519-500-1292 & minghao.ji@uwmidsun.com \\
-Titus Chow  & Electrical Lead     & 226-978-7104 & titus.chow@uwmidsun.com \\
-\bottomrule
-\end{tabular}
-\end{table}
-
 \subsection{Overview}
 Midnight Sun XII's electrical system consists of high- and low-voltage domains that are electrically isolated for safety. The high-voltage system includes the Sunpower E-series solar cells, Nomura maximum power point trackers, Tritium motor controllers and NGM SCM-150 motors. These are externally-sourced components purchased by the team and interface with the vehicle's custom embedded systems.
 
 The low-voltage system is comprised of custom circuit-boards serving several functions for monitoring and controlling the vehicle, primarily: driver controls, power distribution, battery management, and external lights. Several smaller PCBs are located throughout the vehicle to support various sensor interfacing and data collection functions. Most boards communicate over a unified CAN bus, with some nodes supporting smaller subsystems over I2C or SPI. The low-voltage power rail is normally provided by the main battery pack via DC-DC converters, but can also be switched to an auxiliary 12V Ni-MH battery during startup or fault modes.
 
-Due to the different CAN specifications of the Tritium WaveSculptor motor controllers, they are allocated a separate Powertrain CAN network which interfaces with the primary CAN bus via dedicated transceiver boards. A block diagram of all electrical systems is shown in Figure \ref{fig:msxii-electrical-full-block-diagram}. A block diagram of only the vehicle's high-voltage systems is shown in Figure \ref{fig:msxii-electrical-hv-block-diagram}.
+Due to the different CAN specifications of the Tritium WaveSculptor motor controllers, they are allocated a separate powertrain CAN network which interfaces with the primary CAN bus via dedicated transceiver boards. A block diagram of all electrical systems is shown in Figure \ref{fig:msxii-electrical-full-block-diagram}. A block diagram of only the vehicle's high-voltage systems is shown in Figure \ref{fig:msxii-electrical-hv-block-diagram}.
 
 \begin{figure}
 \centering
