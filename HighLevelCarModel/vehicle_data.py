@@ -25,23 +25,38 @@ msxii = {
     "cog_x": 0,                 #center of gravity in lateral direction, m
     "cog_y": 0.52,              #center of gravity in vertical direction, m
     "cog_z": 1.52,              #center of gravity in longitudinal direction, m
-    "j_wheel": None,            #polar mass moment of inertia of wheel, kg/m^2
-    "j_motor_rotor": None,      #polar mass moment of inertia of motor, kg/m^2
+    "j_wheel": 2,            #polar mass moment of inertia of wheel, kg/m^2
+    "j_motor_rotor": 1,         #polar mass moment of inertia of motor, kg/m^2
     
     """Dimensions:"""
     "wheelbase": 2.6,           #wheelbase, meters
     "diam_wheel": 0.53,         #wheel diameter, meters
-    "diam_brake_rotor": 0.53,         #wheel diameter, meters
     "area_frontal": 0.2,        #total frontal area, meters^2
-    "area_caliper_cyclinder": NaN,  #brake pad constact area, meters^2,
-                                #   http://www.wilwood.com/BrakePads/BrakePadsProd.aspx?itemno=150-4091K
+    
+    """Brakes:"""
+    "area_caliper_cyl": 0.0006387084, #caliper cylinder area, meters^2,
+    "area_master_cyl": 0.0002838704, #caliper cylinder area, meters^2,
+    "mu_k_brakes": 0.2,         #coeficient of drag, unitless
+    "max_line_pressue": 10^7,   #pressure, Pa, assumes 400N pedal force with 7:1 pedal ratio
+    "diam_brake_rotor": 0.53,   #wheel diameter, meters
+    "num_calipers": 4,          #number or brake calipers
+    
+    """Motors:"""
+    "stall_torque": 135,        #stall torque of motor, Nm
+    "no_load_speed": 1700,      #no load speed, rpm
+    "regen_gain": 0.01,         #gain applied to angular velocity to get 
     
     """Coefficients:"""
-    "cd": 0.2,                  #coeficient of drag, unitless
-    "c_coulombic": 0.2,         #coeficient of coulombic friction (for entire
-                                #    vehicle), unitless
-    "c_viscous": 0.2,           #coeficient of viscous damping (for entire
-                                #    vehicle), unitless
-    "mu_k_brakes": 0.2,         #coeficient of drag, unitless
-    "cd": 0.2,                  #coeficient of drag, unitless
+    "c_drag": 0.2,              #coeficient of drag, unitless
+    "c_coulombic": 0.2,         #coeficient of coulombic friction (for entire vehicle), unitless
+    "c_viscous": 0.2,           #coeficient of viscous damping (for entire vehicle), unitless
+    "mu_s_tire": 0.7,           #tire coeficient of static frction, unitless
+    "mu_k_tire": 0.6,           #tire coeficient of kinetic frction, unitless
+
+    """Array:"""
+    "array_front_area": 1.1653, #total area, m^2 (76 cells * 0.0153328 m^2 per cell)
+    "array_rear_area": 3.8332,  #total area, m^2 (250 cells * 0.0153328 m^2 per cell)
+    "array_front_angle": -15,   #angle of hood, deg
+    "array_rear_angle": 10,     #angle of rear pannel, deg
+    "array_efficiency": 0.237   #array efficiency, unitless
 }
