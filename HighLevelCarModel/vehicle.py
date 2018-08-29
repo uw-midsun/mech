@@ -21,7 +21,8 @@ __copyright__ = "Copyright 2018, Midnight Sun Solar Car Team"
 
 from datetime import datetime, timedelta
 import math
-from numpy import sign
+import numpy
+import matplotlib.pyplot as plt
 
 """Trig functions implemented for degrees"""
 def cosd(deg):
@@ -97,14 +98,13 @@ class Coordiante:
 class Waypoint:
     """Class to store waypoint on vehicle route"""
     
-    def __init__(self, lat, longi, elev, targ_vel, cloud, temp, press, reflect, humid):
+    def __init__(self, lat, longi, elev, targ_vel, cloud, temp, reflect, humid):
         self.coordinate = Coordiante(lat, longi)  #next waypoint poition, deg  
         self.elevation = elev            #current elevation above sea level, m
         self.target_velocity = targ_vel  #intended velocity at waypoint, m/s
         self.cloudiness = cloud          #factor of irradiance blocked by clouds, %
         self.temperature = temp          #current temperature, degC
-        self.air_pressure = press        #current air pressure, Pa
-        self.reflectance = reflect       #current groudn refectance, 
+        self.reflectance = reflect       #current ground refectance, 
         self.humidity = humid            #relative humidity, %
 
 class Battery:
@@ -173,20 +173,23 @@ class Driver:
 class Brakes:
     """Class for brakes block"""
     
-    def __init__(self, mu_k_brakes, mu_s_tire, mu_k_tire, area_caliper_cyl, max_line_pressue,
-                 diam_brake_rotor, diam_wheel, num_brake_calipers_per_wheel):
+    def __init__(self, mu_k_brakes, mu_s_tire, mu_k_tire, area_caliper_cyl, max_line_pressure,
+                 diam_brake_rotor, diam_wheel, num_brake_calipers_per_wheel, num_brake_wheels):
         self.mu_k_brakes = mu_k_brakes
         self.mu_s_tire = mu_s_tire
         self.mu_k_tire = mu_k_tire
-        self.area_caliper_cyclinder = area_caliper_cyl
-        self.max_line_pressue = max_line_pressue
+        self.area_caliper_cylinder = area_caliper_cyl
+        self.max_line_pressure = max_line_pressure
         self.diam_brake_rotor = diam_brake_rotor
         self.diam_wheel = diam_wheel
         self.num_brake_calipers_per_wheel = num_brake_calipers_per_wheel
+        self.num_brake_wheels = num_brake_wheels
         self.torque = 0          #current motor torque, Nm
         
     def brake_pedal_input_to_pressue(self, brake_pedal_input):
-        """Function to map proportion of brake pedal stroke to line pressure"""
+        """Function to map proportion of brake pedal stroke to line pressure.
+        [IMPROVEMENT] Function has been left trivial for future improvments
+        (perhaps brake pedal input maps to stroke instead of % of max pressure)"""
         return brake_pedal_input * self.max_line_pressure
     
     def update(self, brake_pedal_input, single_wheel_normal_force_front):
@@ -197,16 +200,19 @@ class Brakes:
         # Torque = total friction * moment arm
         # Multiply by 2 for 2 wheels. Divide by 2 for rotor radius
         total_brake_pad_torque = ( brake_pad_force * self.mu_k_brakes *
-                                   self.num_brake_calipers_per_wheel * 2 * self.diam_brake_rotor / 2.0 )
+                                   self.num_brake_calipers_per_wheel *
+                                   self.num_brake_wheels  * self.diam_brake_rotor / 2.0 )
         
         # Max torque = front wheel normal force * tire static frition * moment arm
         # Multipy by 2 for 2 wheels. Divide by 2 for wheel radius
         
         max_tire_static_frition_torque = ( single_wheel_normal_force_front *
-                                           self.mu_s_tire * 2 * self.diam_wheel / 2.0 )
+                                           self.mu_s_tire * self.num_brake_wheels *
+                                           self.diam_wheel / 2.0 )
         
         max_tire_dynamic_frition_torque = ( single_wheel_normal_force_front *
-                                           self.mu_k_tire * 2 * self.diam_wheel / 2.0 )
+                                           self.mu_k_tire * self.num_brake_wheels *
+                                           self.diam_wheel / 2.0 )
         
         # Check if the wheels have locked up (if brake torque > tire static frction torque)
         if ( total_brake_pad_torque > max_tire_static_frition_torque):
@@ -220,7 +226,7 @@ class Motor:
     TO_RAD_PER_SECOND = 0.1047197177
     
     def __init__(self, mu_s_tire, mu_k_tire, diam_wheel, stall_torque,
-                 no_load_speed, regen_gain):
+                 no_load_speed, regen_gain, num_motors):
         self.torque = 0          #current motor torque, Nm
         self.power = 0           #current motor consumption, W
         self.mu_s_tire = mu_s_tire
@@ -228,14 +234,15 @@ class Motor:
         self.diam_wheel = diam_wheel
         self.stall_torque = stall_torque
         self.no_load_speed = no_load_speed
-        self.regen_gain = regen_gain
+        self.regen_gain = regen_gain #regen gain must be negative
+        self.num_motors = num_motors
         
     def get_torque_from_throttle(self, commanded_throttle, curr_rpm):
         """Function to map throttle to motor torque. Assume linear model
            until torque speed curve can be input"""
-        torque_vs_speed_slope = - (self.stall_torque / self.no_load_speed)
-        speed_adjusted_max_torque = stall_torque + torque_vs_speed_slope * curr_velocity
-        return speed_adjusted_max_torque * commanded_throttle
+        torque_vs_speed_slope = - (float(self.stall_torque) / float(self.no_load_speed))
+        speed_adjusted_max_torque = self.stall_torque + torque_vs_speed_slope * curr_rpm
+        return speed_adjusted_max_torque * commanded_throttle * self.num_motors
 
     def get_drive_efficiency(self, curr_rpm):
         """Function to get motor drive efficiency from torque and speed"""
@@ -249,11 +256,13 @@ class Motor:
         """Function to update motor toque"""
         curr_rpm = curr_velocity * 60 / (math.pi * self.diam_wheel)
         if commanded_throttle == 0: # Check for regen braking, use linear model 
-            self.torque = self.regen_gain * curr_rpm
-            self.power = self.torque * curr_rpm * Motor.TO_RAD_PER_SECOND * get_regen_efficiency(curr_rpm)
+            self.torque = self.regen_gain * curr_rpm * self.num_motors
+            self.power = (self.torque * curr_rpm * Motor.TO_RAD_PER_SECOND *
+                          self.get_regen_efficiency(curr_rpm))
         else: 
-            self.torque = get_torque_from_throttle(commanded_throttle, curr_rpm)
-            self.power = self.torque * curr_rpm * Motor.TO_RAD_PER_SECOND / get_drive_efficiency(curr_rpm)
+            self.torque = self.get_torque_from_throttle(commanded_throttle, curr_rpm)
+            self.power = (self.torque * curr_rpm * Motor.TO_RAD_PER_SECOND /
+                          self.get_drive_efficiency(curr_rpm))
     
         #[IMPROVEMENT] Could add logic to check for tire slipping here
     
@@ -264,7 +273,7 @@ class CarDynamics:
     A_GRAVITY = 9.81
     
     def __init__(self, mass, c_viscous, c_coulombic, c_drag, wheel_diam, wheel_j,
-                 motor_rotor_j, timestep):
+                 motor_rotor_j, timestep, frontal_area, wheelbase, cog_height):
         # lower indices are most recent
         self.velocity = [0,0]              # velocity list, m/s
         self.acceleration = [0,0]          # acceleration list, m/s^2
@@ -272,22 +281,28 @@ class CarDynamics:
         self.c_viscous = c_viscous
         self.c_coulombic = c_coulombic
         self.c_drag = c_drag
-        self.wheel_rad = wheel_diam
+        self.wheel_diam = wheel_diam
         self.wheel_rad = wheel_diam/2.0
         self.wheel_j = wheel_j
         self.motor_rotor_j = motor_rotor_j
-        self.curr_road_gradient = NaN
-        self.curr_motor_torque = NaN
-        self.curr_brake_torque = NaN
-        self.curr_air_density = NaN
+        self.frontal_area = frontal_area
+        self.wheelbase = wheelbase
+        self.cog_height = cog_height
+        self.curr_road_gradient = 0
+        self.curr_motor_torque = 0
+        self.curr_brake_torque = 0
+        self.curr_air_density = None
         self.timestep = timestep
-        self.normal_force_front = NaN
+        self.normal_force_front = None
         
-    def get_air_density(self, elevation, temperature, humidity, air_pressure):
+    def get_air_density(self, elevation, temperature, humidity):
         # Funtion to determine air density based on temperature, pressure
         # and humidity. Uses partial pressures of dry air and water vapour
         # https://wahiduddin.net/calc/density_altitude.htm
-        p_vap = 610.78 * 10^((7.5*temperature) / (temperature + 273.15))
+        # Air pressure calculated based on elevation (assume changes due to weather are negligible)
+        # https://en.wikipedia.org/wiki/Atmospheric_pressure
+        air_pressure = 101325 * math.pow((1 - elevation * 0.00002255769564), 5.2557812929)
+        p_vap = 6.1078 * math.pow(10,((7.5*temperature) / (temperature + 273.15)))
         p_dry = air_pressure - p_vap * humidity
         Rd = 287.05 # J/(kg*degK)
         Rvap = 461.50 # J/(kg*degK)
@@ -311,45 +326,51 @@ class CarDynamics:
                              (self.wheel_rad**2  * self.mass * self.wheel_j))
         # Aerodynamic drag compoenent
         accelerations.append(self.curr_air_density *
-                             self.c_drag * self.frontal_area * velocity**2 /
+                             self.c_drag * self.frontal_area * math.pow(velocity,2) /
                              (self.mass * self.wheel_j))
         # Gravity compoenent
         accelerations.append(self.A_GRAVITY *
-                             math.sin(self.curr_road_gradiant*self.TO_RADIANS) /
+                             math.sin(self.curr_road_gradient*self.TO_RADIANS) /
                              self.wheel_j)
         # Return superposition of all acceleration components
         return sum(accelerations)
     
     def rungeK_kutta_4(self, function, t, delta_t, y): 
         k1 = delta_t * function(t, y);
-        k2 = delta_t * function(t+delta_t/2/0, y+k1/2.0);
+        k2 = delta_t * function(t+delta_t/2.0, y+k1/2.0);
         k3 = delta_t * function(t+delta_t/2.0, y+k2/2.0);
         k4 = delta_t * function(t+delta_t, y+k3);
         y_next = y + (k1 + 2*k2 + 2*k3 + k4)/6.0;
         return y_next
     
-    def get_front_normal_force(self)
+    def get_front_normal_force(self, motor_torque, brake_torque):
         """Function to return the normal force on each front wheel based on half car model"""
+        motor_force = motor_torque / self.wheel_rad
+        braking_force = brake_torque / self.wheel_rad
+        normal_force_front = ( (self.cog_height * (braking_force - motor_force)
+                            + self.wheelbase * self.mass * self.A_GRAVITY)
+                            / (self.acceleration[0] + self.wheelbase))          
     
-    def update(self, motor_torque, brake_torque, time, road_gradient, elevation, temperature, humidity, air_pressure):
+    def update(self, motor_torque, brake_torque, time, road_gradient, elevation, temperature, humidity):
         self.road_gradient = road_gradient
         self.curr_motor_torque = motor_torque
         self.curr_brake_torque = brake_torque
         self.curr_air_density = self.get_air_density(elevation, temperature, humidity)
         # Remove previous, previous values
-        self.accceleration.pop(0)
+        self.acceleration.pop(0)
         self.velocity.pop(0)
         # Calcualte current acceleration using 4th order runge kutta
         self.acceleration.append( self.rungeK_kutta_4(
                                         self.acceleration_diff_equn,
                                         time,
                                         self.timestep,
-                                        self.velocity[1]) )
+                                        self.velocity[0]) )
         # Integerate using trapazoidal rule to find next velocity
         self.velocity.append( self.velocity[0] + ( self.acceleration[0] +
                                                    self.acceleration[1] * self.timestep / 2 ))
+        print self.velocity[0]
         # Update front normal force (single wheel):
-        self.normal_force_front = self.get_front_normal_force()
+        self.normal_force_front = self.get_front_normal_force(motor_torque, brake_torque)
     
 class Array:
     """Class for array block"""
@@ -504,12 +525,14 @@ class Vehicle:
                              self.params.driver_k_i, Vehicle.TIMESTEP)           
         self.motor = Motor(self.params.mu_s_tire, self.params.mu_k_tire,
                            self.params.diam_wheel, self.params.stall_torque,
-                           self.params.no_load_speed, self.params.regen_gain)
+                           self.params.no_load_speed, self.params.regen_gain,
+                           self.num_motors)
         self.mech_brakes = Brakes(self.params.mu_k_brakes, self.params.mu_s_tire,
                                   self.params.mu_k_tire, self.params.area_caliper_cyl,
                                   self.params.max_line_pressue, self.params.diam_brake_rotor,
                                   self.params.diam_wheel,
-                                  self.params.num_calipers_per_wheel)
+                                  self.params.num_calipers_per_wheel,
+                                  self.num_brake_wheels)
         self.car_dynamics = CarDynamics(self.params.mass, self.params.c_viscous,
                                         self.params.c_coulombic, self.params.c_drag,
                                         self.params.diam_wheel, self.params.j_wheel,
@@ -570,7 +593,7 @@ class Vehicle:
                             self.hv_losses.power)
         
     def drive_to_next_waypoint(self):
-        """Function to iterate at period of timestep untill the vehicle has
+        """Function to iterate at period of timestep until the vehicle has
         reached the target waypoint within the given tolerance"""
         
         # Solve for original distance, heading and graident

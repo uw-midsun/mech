@@ -39,17 +39,19 @@ msxii = {
     "mu_k_brakes": 0.2,         #coeficient of drag, unitless
     "max_line_pressue": 10^7,   #pressure, Pa, assumes 400N pedal force with 7:1 pedal ratio
     "diam_brake_rotor": 0.53,   #wheel diameter, meters
-    "num_calipers_per_wheel": 2,          #number or brake calipers
+    "num_calipers_per_wheel": 2,#number or brake calipers
+    "num_brake_wheels": 2,
     
-    """Motors:"""
+    """Driver:"""
     "driver_k_p": .1,
     "driver_k_d": 0,
-    "driver_k_i": 0, 
+    "driver_k_i": 0,
     
     """Motors:"""
     "stall_torque": 135,        #stall torque of motor, Nm
     "no_load_speed": 1700,      #no load speed, rpm
     "regen_gain": 0.01,         #gain applied to angular velocity to get 
+    "num_motors": 2,
     
     """Coefficients:"""
     "c_drag": 0.2,              #coeficient of drag, unitless

@@ -69,9 +69,55 @@ for i in range(len(curr_velocity)):
 """Brakes Class:"""
 print
 print "Brakes Class:"
-test_brakes = Brakes(.5, .5, .5, 0.001, 1000000,.2, .5, 4)
+test_brakes = Brakes(1.0, .4, .25, 0.001, 1000000,.2, .5, 2, 2)
+for i in range(0,11):
+    test_brakes.update((i/10.0), 1500)
+    print ("%d0%% brake: %5.2f" % (i, test_brakes.torque))
+print
+# Torque at 50% braking is 200Nm
+# Max toque before sliding is 300Nm
+# Sliding torque is 187.5Nm
 
 """Motor Class:"""
 print
 print "Motor Class:"
-test_motor = Motor()
+test_motor = Motor(0.8, 0.5, 0.5, 135, 1700, -0.15, 2)
+test_motor.update(0, 20, None)
+print ("0%% throttle, 20m/s - Torque: %5.2f, Power: %5.2f" % (test_motor.torque, test_motor.power))
+test_motor.update(0.5, 20, None)
+print ("50%% throttle, 20m/s - Torque: %5.2f, Power: %5.2f" % (test_motor.torque, test_motor.power))
+test_motor.update(1.0, 20, None)
+print ("100%% throttle, 20m/s - Torque: %5.2f, Power: %5.2f" % (test_motor.torque, test_motor.power))
+print
+
+"""Car Dynamics Class:"""
+print
+print "Car Dynamics Class:"
+test_car_dynamics = CarDynamics(635, 0.2, 0.2, 0.2, 0.53, 2, 2, 0.1, 2, 2.6, 0.52)
+print test_car_dynamics.get_air_density(500, 20, 50)
+velocity_log = []
+acceleration_log = []
+time_log = []
+normal_force_front_log = []
+for i in range(1,2001):
+    test_car_dynamics.update(120, 0, i*0.1, 0, 0, 20, 50)
+    velocity_log.append(test_car_dynamics.velocity[0])
+    acceleration_log.append(test_car_dynamics.acceleration[0])
+    time_log.append(i*0.1)
+    normal_force_front_log.append(test_car_dynamics.normal_force_front)
+
+plt.subplot(3, 1, 1)
+plt.plot(time_log, normal_force_front_log, 'o-')
+plt.title('Car Dynamics Test Case 1')
+plt.ylabel('Normal Force (N)')
+
+plt.subplot(3, 1, 2)
+plt.plot(time_log, velocity_log, '.-')
+plt.ylabel('Velocity (m/s)')
+
+plt.subplot(3, 1, 3)
+plt.plot(time_log, acceleration_log, '--')
+plt.xlabel('Time (s)')
+plt.ylabel('Acceleration (m/s^2)')
+
+plt.show()
