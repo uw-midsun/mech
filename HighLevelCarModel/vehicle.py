@@ -274,7 +274,7 @@ class CarDynamics:
     
     def __init__(self, mass, c_viscous, c_coulombic, c_drag, wheel_diam, wheel_j,
                  motor_rotor_j, timestep, frontal_area, wheelbase, cog_height):
-        # lower indices are most recent
+        # higher indices are most recent
         self.velocity = [0,0]              # velocity list, m/s
         self.acceleration = [0,0]          # acceleration list, m/s^2
         self.mass = mass
@@ -311,27 +311,24 @@ class CarDynamics:
         
     def acceleration_diff_equn(self, time, velocity): 
         # Define list to store all acceleration compoents
+        comm_factor = 1 / (self.mass + (self.wheel_j / (self.wheel_rad**2)))
         accelerations = []
         # Motor torque compoent
-        accelerations.append(self.curr_motor_torque /
-                             (self.wheel_rad  * self.mass * self.wheel_j))
+        accelerations.append(comm_factor * self.curr_motor_torque / self.wheel_rad)
         # Coulombic friction compoent
-        accelerations.append(-self.c_coulombic * numpy.sign(velocity) /
-                             (self.wheel_rad  * self.mass * self.wheel_j))
+        accelerations.append(comm_factor * -1.0 * self.c_coulombic *
+                             numpy.sign(velocity) / self.wheel_rad)
         # Viscous damping component
-        accelerations.append(-self.c_viscous * velocity * numpy.sign(velocity) / 
-                             (self.mass * self.wheel_j))
+        accelerations.append(comm_factor * -1.0 * self.c_viscous * velocity *
+                             numpy.sign(velocity) / (self.wheel_rad**2))
         # Mechanical brakes compoenent
-        accelerations.append(-self.curr_brake_torque /
-                             (self.wheel_rad**2  * self.mass * self.wheel_j))
+        accelerations.append(comm_factor * self.curr_brake_torque / self.wheel_rad)
         # Aerodynamic drag compoenent
-        accelerations.append(self.curr_air_density *
-                             self.c_drag * self.frontal_area * math.pow(velocity,2) /
-                             (self.mass * self.wheel_j))
+        accelerations.append(comm_factor * -0.5 * (velocity**2.0)  *
+                             self.curr_air_density * self.frontal_area * self.c_drag)
         # Gravity compoenent
-        accelerations.append(self.A_GRAVITY *
-                             math.sin(self.curr_road_gradient*self.TO_RADIANS) /
-                             self.wheel_j)
+        accelerations.append(comm_factor * -1 * self.A_GRAVITY * self.mass *
+                             math.sin(self.curr_road_gradient*self.TO_RADIANS))
         # Return superposition of all acceleration components
         return sum(accelerations)
     
@@ -340,7 +337,7 @@ class CarDynamics:
         k2 = delta_t * function(t+delta_t/2.0, y+k1/2.0);
         k3 = delta_t * function(t+delta_t/2.0, y+k2/2.0);
         k4 = delta_t * function(t+delta_t, y+k3);
-        y_next = y + (k1 + 2*k2 + 2*k3 + k4)/6.0;
+        y_next = y + (k1 + 2.0*k2 + 2.0*k3 + k4)/6.0;
         return y_next
     
     def get_front_normal_force(self, motor_torque, brake_torque):
@@ -360,15 +357,13 @@ class CarDynamics:
         self.acceleration.pop(0)
         self.velocity.pop(0)
         # Calcualte current acceleration using 4th order runge kutta
-        self.acceleration.append( self.rungeK_kutta_4(
-                                        self.acceleration_diff_equn,
-                                        time,
-                                        self.timestep,
-                                        self.velocity[0]) )
-        # Integerate using trapazoidal rule to find next velocity
-        self.velocity.append( self.velocity[0] + ( self.acceleration[0] +
-                                                   self.acceleration[1] * self.timestep / 2 ))
-        print self.velocity[0]
+        self.velocity.append( self.rungeK_kutta_4(
+                              self.acceleration_diff_equn,
+                              time,
+                              self.timestep,
+                              self.velocity[0]) )
+        # Differentiate to find average acceleration
+        self.acceleration.append((self.velocity[1] - self.velocity[0]) / self.timestep)
         # Update front normal force (single wheel):
         self.normal_force_front = self.get_front_normal_force(motor_torque, brake_torque)
     

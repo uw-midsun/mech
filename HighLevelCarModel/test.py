@@ -93,14 +93,14 @@ print
 """Car Dynamics Class:"""
 print
 print "Car Dynamics Class:"
-test_car_dynamics = CarDynamics(635, 0.2, 0.2, 0.2, 0.53, 2, 2, 0.1, 2, 2.6, 0.52)
-print test_car_dynamics.get_air_density(500, 20, 50)
+test_car_dynamics = CarDynamics(635, 0.01, 0.1, 0.25, 0.53, 0.2, 0.1, 0.1, 3, 2.6, 0.52)
+print test_car_dynamics.get_air_density(500, 20, .5)
 velocity_log = []
 acceleration_log = []
 time_log = []
 normal_force_front_log = []
 for i in range(1,2001):
-    test_car_dynamics.update(120, 0, i*0.1, 0, 0, 20, 50)
+    test_car_dynamics.update(200, 0, i*0.1, 0, 0, 20, .5)
     velocity_log.append(test_car_dynamics.velocity[0])
     acceleration_log.append(test_car_dynamics.acceleration[0])
     time_log.append(i*0.1)
@@ -114,6 +114,7 @@ plt.ylabel('Normal Force (N)')
 plt.subplot(3, 1, 2)
 plt.plot(time_log, velocity_log, '.-')
 plt.ylabel('Velocity (m/s)')
+plt.ylim(0,40)
 
 plt.subplot(3, 1, 3)
 plt.plot(time_log, acceleration_log, '--')
