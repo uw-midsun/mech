@@ -53,7 +53,7 @@ class VehicleConstants:
         for key, value in vehicle_dictionary.iteritems():
             setattr(self, key, value)
 
-class Coordiante:
+class Coordinate:
     """Class to store waypoint on vehicle route"""
     
     TO_RADIANS = 0.0174533
@@ -68,10 +68,10 @@ class Coordiante:
         Implemented using the haversine formula: https://www.movable-type.co.uk/scripts/latlong.html"""
         
         R = 6371e3 # radius of the earth in metres
-        latitude_1 = self.latitude * Coordiante.TO_RADIANS
-        latitude_2 = target_coordiante.latitude * Coordiante.TO_RADIANS
-        delta_latitude = (target_coordiante.latitude-self.latitude) * Coordiante.TO_RADIANS
-        delta_longitude = (target_coordiante.longitude- self.longitude) * Coordiante.TO_RADIANS
+        latitude_1 = self.latitude * Coordinate.TO_RADIANS
+        latitude_2 = target_coordiante.latitude * Coordinate.TO_RADIANS
+        delta_latitude = (target_coordiante.latitude-self.latitude) * Coordinate.TO_RADIANS
+        delta_longitude = (target_coordiante.longitude- self.longitude) * Coordinate.TO_RADIANS
 
         a = ( math.sin(delta_latitude/2.0) * math.sin(delta_latitude/2.0) +
               math.cos(latitude_1) * math.cos(latitude_2) *
@@ -84,22 +84,22 @@ class Coordiante:
         """Funtion to compute the direction to point to target coordinate.
         Implemented using the forward azimuth formula: https://www.movable-type.co.uk/scripts/latlong.html"""
         
-        latitude_1 = self.latitude * Coordiante.TO_RADIANS
-        latitude_2 = target_coordiante.latitude * Coordiante.TO_RADIANS
-        longitude_1 = self.longitude * Coordiante.TO_RADIANS
-        longitude_2 = target_coordiante.longitude * Coordiante.TO_RADIANS
+        latitude_1 = self.latitude * Coordinate.TO_RADIANS
+        latitude_2 = target_coordiante.latitude * Coordinate.TO_RADIANS
+        longitude_1 = self.longitude * Coordinate.TO_RADIANS
+        longitude_2 = target_coordiante.longitude * Coordinate.TO_RADIANS
         
         y = math.sin(longitude_2 - longitude_1) * math.cos(latitude_2)
         x = ( math.cos(latitude_1) * math.sin(latitude_2) -
               math.sin(latitude_1) * math.cos(latitude_2) *
               math.cos(longitude_2 - longitude_1) )
-        return math.atan2(y, x) * Coordiante.TO_DEGREES
+        return math.atan2(y, x) * Coordinate.TO_DEGREES
 
 class Waypoint:
     """Class to store waypoint on vehicle route"""
     
     def __init__(self, lat, longi, elev, targ_vel, cloud, temp, reflect, humid):
-        self.coordinate = Coordiante(lat, longi)  #next waypoint poition, deg  
+        self.coordinate = Coordinate(lat, longi)  #next waypoint poition, deg  
         self.elevation = elev            #current elevation above sea level, m
         self.target_velocity = targ_vel  #intended velocity at waypoint, m/s
         self.cloudiness = cloud          #factor of irradiance blocked by clouds, %
@@ -263,7 +263,9 @@ class Motor:
             self.torque = self.get_torque_from_throttle(commanded_throttle, curr_rpm)
             self.power = (self.torque * curr_rpm * Motor.TO_RAD_PER_SECOND /
                           self.get_drive_efficiency(curr_rpm))
-    
+        #Flip the sign of power to correspond with sign convension
+        # [IMPROVEMENT] this is a hack fix for now need to change sign or torque for entire model 
+        self.power *= -1
         #[IMPROVEMENT] Could add logic to check for tire slipping here
     
 class CarDynamics:
@@ -328,7 +330,7 @@ class CarDynamics:
                              self.curr_air_density * self.frontal_area * self.c_drag)
         # Gravity compoenent
         accelerations.append(comm_factor * -1 * self.A_GRAVITY * self.mass *
-                             math.sin(self.curr_road_gradient*self.TO_RADIANS))
+                             math.sin(math.atan(self.curr_road_gradient)))
         # Return superposition of all acceleration components
         return sum(accelerations)
     
@@ -349,7 +351,7 @@ class CarDynamics:
                             / (self.acceleration[0] + self.wheelbase))          
     
     def update(self, motor_torque, brake_torque, time, road_gradient, elevation, temperature, humidity):
-        self.road_gradient = road_gradient
+        self.curr_road_gradient = road_gradient
         self.curr_motor_torque = motor_torque
         self.curr_brake_torque = brake_torque
         self.curr_air_density = self.get_air_density(elevation, temperature, humidity)
@@ -385,12 +387,12 @@ class Sunlight:
     SOLAR_CONST = 1367                   # W/m^2
     
     def __init__(self, array_angle):
-        self.irradiance = NaN            #curent irradiance on car, W/m^2
+        self.irradiance = 0              #curent irradiance on car, W/m^2
         self.array_angle = array_angle   #angle of array with respect to horizontal
     
     def get_declination(self, date_time):
         # Implement's Spencer's equation for declination (1971)
-        n = date_time.timetuple().tm_day # find n'th day of the year
+        n = date_time.timetuple().tm_yday # find n'th day of the year
         B = (n-1)*(360 /365)
         declination = (180/math.pi)*(0.006918 - 0.399912*cosd(B)
                       + 0.070257*sind(B) - 0.006758*cosd(2*B)
@@ -415,8 +417,8 @@ class Sunlight:
     def get_angle_of_incidence(self, dclitn, position, hr_ang, azimuth, gradient, array_angle):
         # Uses formula from Solar Engineerin of Thermal Processes (2013) Duffie et al
         lat = position.latitude
-        slope = atand(gradient) * TO_DEGREES + array_angle
-        return acosd( math.sin(dclitn) * sind(lat) * cosd(slope)
+        slope = atand(gradient) * self.TO_DEGREES + array_angle
+        return acosd( sind(dclitn) * sind(lat) * cosd(slope)
                - sind(dclitn) * cosd(lat) * sind(slope) * cosd(azimuth)
                + cosd(dclitn) * cosd(lat) * cosd(slope) * cosd(hr_ang)
                + cosd(dclitn) * sind(lat) * sind(slope) * cosd(azimuth) * cosd(hr_ang)
@@ -431,11 +433,11 @@ class Sunlight:
     def get_diffuse_transmission(self, beam_transmission):
         return 0.271 - 0.294 * beam_transmission
     
-    def get_total_irradiance(self, ang_of_incidence, zinuth, beam_transmission, diffuse_transmission, cloudienss, reflectance):
-        beam_irradiance = beam_transmission * SOLAR_CONST * cloudienss
-        diffuse_irradiance = diffuse_transmission * SOLAR_CONST * cosd(zinuth) * cloudienss
-        slope = atand(gradient) * TO_DEGREES + array_angle
-        return ( beam_irradiance * cosd(ang_of_incidence) * numpy.heaviside(cosd(ang_of_incidence),0) +
+    def get_total_irradiance(self, ang_of_incidence, zinuth, beam_transmission, diffuse_transmission, cloudienss, reflectance, gradient):
+        beam_irradiance = beam_transmission * self.SOLAR_CONST * cloudienss
+        diffuse_irradiance = diffuse_transmission * self.SOLAR_CONST * cosd(zinuth) * cloudienss
+        slope = atand(gradient) * self.TO_DEGREES + self.array_angle
+        return ( beam_irradiance * cosd(ang_of_incidence) * int(cosd(ang_of_incidence) > 0) +
                  diffuse_irradiance * (1 + cosd(slope))/2.0 +
                  (beam_irradiance + diffuse_irradiance) * reflectance * (1 - cosd(slope))/2 )
 
@@ -444,13 +446,29 @@ class Sunlight:
         hr_ang = self.get_hour_angle(date_time)
         azimuth = self.get_surface_azimuth(heading)
         zinuth = self.get_zinuth(dclitn, position, hr_ang)
-        ang_of_incidence = self.get_angle_of_incidence(dclitn, position, hr_ang, azimuth, gradient, array_angle)
-        beam_transmission = get_beam_transmission(elevation, zinuth)
-        diffuse_transmission = get_diffuse_transmission(beam_transmission)
-        self.irradiance =  get_total_irradiance(ang_of_incidence,
+        ang_of_incidence = self.get_angle_of_incidence(dclitn, position, hr_ang, azimuth, gradient, self.array_angle)
+        beam_transmission = self.get_beam_transmission(elevation, zinuth)
+        diffuse_transmission = self.get_diffuse_transmission(beam_transmission)
+        print
+        print"Declination:"
+        print dclitn
+        print"Hour Angle:"
+        print hr_ang
+        print"Azimuth:"
+        print azimuth
+        print"Zinuth:"
+        print zinuth
+        print"Angle of Incidence:"
+        print ang_of_incidence
+        print"Beam Transmission:"
+        print beam_transmission
+        print"Diffuse Transmission:"
+        print diffuse_transmission
+        print
+        self.irradiance =  self.get_total_irradiance(ang_of_incidence,
                                                 zinuth, beam_transmission,
                                                 diffuse_transmission,
-                                                cloudienss, reflectance)
+                                                cloudienss, reflectance, gradient)
         
 class HighVoltageLosses:
     """Class for high voltage losses block"""
@@ -506,7 +524,7 @@ class Vehicle:
         
         # Vehicle level state variables
         self.date_time = datetime()
-        self.position = Coordiante(NaN, NaN)  #current poition, deg
+        self.position = Coordinate(NaN, NaN)  #current poition, deg
         self.elevation = NaN                  #current elevation above sea level, m
         self.heading = NaN                    #direction of travel, deg
         self.gradient = NaN                   #slope of current gradient, rise/run

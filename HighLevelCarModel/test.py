@@ -1,5 +1,6 @@
 from vehicle import *
 import vehicle_data
+import datetime
 
 """Trig Functions:"""
 print
@@ -21,10 +22,10 @@ print "Wheel diameter = ", msxii_data.diam_wheel
 """Coordiante Class:"""
 print
 print "Coordiante Class:"
-test_coord1 = Coordiante(37.455926, -122.065457)
-test_coord2 = Coordiante(37.509186, -122.060822)
-test_coord3 = Coordiante(56.317013, -117.465206)
-test_coord4 = Coordiante(56.335315, -117.506920)
+test_coord1 = Coordinate(37.455926, -122.065457)
+test_coord2 = Coordinate(37.509186, -122.060822)
+test_coord3 = Coordinate(56.317013, -117.465206)
+test_coord4 = Coordinate(56.335315, -117.506920)
 print "Test Case 1:"
 print test_coord1.get_distance_to(test_coord2)
 print test_coord1.get_direction_to(test_coord2)
@@ -100,7 +101,7 @@ acceleration_log = []
 time_log = []
 normal_force_front_log = []
 for i in range(1,2001):
-    test_car_dynamics.update(200, 0, i*0.1, 0, 0, 20, .5)
+    test_car_dynamics.update(200, 0, i*0.1, 0.0875, 500, 20, .5)
     velocity_log.append(test_car_dynamics.velocity[0])
     acceleration_log.append(test_car_dynamics.acceleration[0])
     time_log.append(i*0.1)
@@ -121,4 +122,15 @@ plt.plot(time_log, acceleration_log, '--')
 plt.xlabel('Time (s)')
 plt.ylabel('Acceleration (m/s^2)')
 
-plt.show()
+#plt.show()
+
+"""Sunlight Class:"""
+print
+print "Sunlight:"
+test_sunlight = Sunlight(10)
+date_time = datetime.datetime(2018, 8, 1, 11, 0, 0)
+print str(date_time)
+print date_time.timetuple().tm_yday
+postition = Coordinate(47.6, 122.3167)
+test_sunlight.update(postition, 5000, .06, 340, date_time, 1, 0.5)
+print test_sunlight.irradiance 
