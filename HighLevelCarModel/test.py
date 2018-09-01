@@ -18,6 +18,7 @@ print "Vehicle Constant Class:"
 msxii_data = VehicleConstants()
 msxii_data.load_vehicle(vehicle_data.msxii)
 print "Wheel diameter = ", msxii_data.diam_wheel
+print "Driver Kp = ", msxii_data.driver_k_p
 
 """Coordiante Class:"""
 print
@@ -39,7 +40,7 @@ print test_coord1.get_direction_to(test_coord4)
 """Battery Class:"""
 print
 print "Battery Class:"
-test_battery = Battery(1)
+test_battery = Battery(1,500000)
 test_battery.soc = 1000
 motor_power = [50,100,-100,-100,100] #Integrate: 25, 75, 0, -100, 0
 rear_array_power = [50, 50, 50, 50, 50] # Integrate: 25, 50, 50, 50, 50
@@ -83,11 +84,11 @@ print
 print
 print "Motor Class:"
 test_motor = Motor(0.8, 0.5, 0.5, 135, 1700, -0.15, 2)
-test_motor.update(0, 20, None)
+test_motor.update(0, 20, None, 25)
 print ("0%% throttle, 20m/s - Torque: %5.2f, Power: %5.2f" % (test_motor.torque, test_motor.power))
-test_motor.update(0.5, 20, None)
+test_motor.update(0.5, 20, None, 19)
 print ("50%% throttle, 20m/s - Torque: %5.2f, Power: %5.2f" % (test_motor.torque, test_motor.power))
-test_motor.update(1.0, 20, None)
+test_motor.update(1.0, 20, None, 19)
 print ("100%% throttle, 20m/s - Torque: %5.2f, Power: %5.2f" % (test_motor.torque, test_motor.power))
 print
 
@@ -107,22 +108,23 @@ for i in range(1,2001):
     time_log.append(i*0.1)
     normal_force_front_log.append(test_car_dynamics.normal_force_front)
 
-plt.subplot(3, 1, 1)
-plt.plot(time_log, normal_force_front_log, 'o-')
-plt.title('Car Dynamics Test Case 1')
-plt.ylabel('Normal Force (N)')
-
-plt.subplot(3, 1, 2)
-plt.plot(time_log, velocity_log, '.-')
-plt.ylabel('Velocity (m/s)')
-plt.ylim(0,40)
-
-plt.subplot(3, 1, 3)
-plt.plot(time_log, acceleration_log, '--')
-plt.xlabel('Time (s)')
-plt.ylabel('Acceleration (m/s^2)')
-
-#plt.show()
+if False: 
+    plt.subplot(3, 1, 1)
+    plt.plot(time_log, normal_force_front_log, 'o-')
+    plt.title('Car Dynamics Test Case 1')
+    plt.ylabel('Normal Force (N)')
+    
+    plt.subplot(3, 1, 2)
+    plt.plot(time_log, velocity_log, '.-')
+    plt.ylabel('Velocity (m/s)')
+    plt.ylim(0,40)
+    
+    plt.subplot(3, 1, 3)
+    plt.plot(time_log, acceleration_log, '--')
+    plt.xlabel('Time (s)')
+    plt.ylabel('Acceleration (m/s^2)')
+    
+    plt.show()
 
 """Sunlight Class:"""
 print
@@ -132,5 +134,13 @@ date_time = datetime.datetime(2018, 8, 1, 11, 0, 0)
 print str(date_time)
 print date_time.timetuple().tm_yday
 postition = Coordinate(47.6, 122.3167)
-test_sunlight.update(postition, 5000, .06, 340, date_time, 1, 0.5)
-print test_sunlight.irradiance 
+test_sunlight.update(postition, 5000, .06, 340, date_time, 0, 0.5)
+print test_sunlight.irradiance
+
+
+"""Main"""
+print
+print "Main"
+test_waypoints_file = "test_waypoints2.csv"
+test_sim  = VehicleSimulation(msxii_data, test_waypoints_file)
+test_sim.run()

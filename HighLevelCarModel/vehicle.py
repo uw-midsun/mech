@@ -23,6 +23,7 @@ from datetime import datetime, timedelta
 import math
 import numpy
 import matplotlib.pyplot as plt
+import csv
 
 """Trig functions implemented for degrees"""
 def cosd(deg):
@@ -50,8 +51,12 @@ class VehicleConstants:
         pass
     
     def load_vehicle(self, vehicle_dictionary):
+        print
+        print "- - - - Vehicle Parameters: - - - - "
         for key, value in vehicle_dictionary.iteritems():
             setattr(self, key, value)
+            print key + ": " + str(value)
+        print
 
 class Coordinate:
     """Class to store waypoint on vehicle route"""
@@ -98,21 +103,22 @@ class Coordinate:
 class Waypoint:
     """Class to store waypoint on vehicle route"""
     
-    def __init__(self, lat, longi, elev, targ_vel, cloud, temp, reflect, humid):
-        self.coordinate = Coordinate(lat, longi)  #next waypoint poition, deg  
-        self.elevation = elev            #current elevation above sea level, m
-        self.target_velocity = targ_vel  #intended velocity at waypoint, m/s
-        self.cloudiness = cloud          #factor of irradiance blocked by clouds, %
-        self.temperature = temp          #current temperature, degC
-        self.reflectance = reflect       #current ground refectance, 
-        self.humidity = humid            #relative humidity, %
+    def __init__(self, inputs):
+        # Order of inputs: lat, longi, elev, targ_vel, cloud, temp, reflect, humid
+        self.coordinate = Coordinate(inputs[0], inputs[1])  #next waypoint poition, deg  
+        self.elevation = inputs[2]                          #current elevation above sea level, m
+        self.target_speed = inputs[3]                    #intended velocity at waypoint, m/s
+        self.cloudiness = inputs[4]                         #factor of irradiance blocked by clouds, %
+        self.temperature = inputs[5]                        #current temperature, degC
+        self.reflectance = inputs[6]                        #current ground refectance, 
+        self.humidity = inputs[7]                           #relative humidity, %
 
 class Battery:
     """Class to handle all battery level funcitons"""
     
-    def __init__(self, input_timestep):
+    def __init__(self, input_timestep, initial_soc):
         self.timestep = input_timestep
-        self.soc = 0           #current battery pack state of charge, J
+        self.soc = initial_soc           #current battery pack state of charge, J
         self.net_power = [0, 0]          #fixed lenght FIFO with right side in, left side out
         
     def update(self, motor_power, rear_array_power, front_array_power,
@@ -141,13 +147,13 @@ class Driver:
         self.brake_pedal_input = 0       #current brake pedal force, N
         self.control_signal = 0
         
-    def update(self, curr_velocity, target_velocity):
+    def update(self, curr_velocity, target_speed):
         """Compuptes control signal and adjusts commended throttle and brake
         pedal input accordingly. Both are values from 0 to 1 represeting the
         amount the pedal is depressed. This will be mapped to torques in the
         brakes and motor classes"""
         self.velocity_error.pop(0)
-        self.velocity_error.append(target_velocity-curr_velocity)
+        self.velocity_error.append(target_speed-curr_velocity)
         self.error_integrator += ( (self.velocity_error[0] +
                                    self.velocity_error[1]) * self.timestep / 2.0 )
 
@@ -190,6 +196,8 @@ class Brakes:
         """Function to map proportion of brake pedal stroke to line pressure.
         [IMPROVEMENT] Function has been left trivial for future improvments
         (perhaps brake pedal input maps to stroke instead of % of max pressure)"""
+        if brake_pedal_input < 0.3:
+            brake_pedal_input = 0
         return brake_pedal_input * self.max_line_pressure
     
     def update(self, brake_pedal_input, single_wheel_normal_force_front):
@@ -252,11 +260,12 @@ class Motor:
         """Function to get motor regen braking efficiency from torque and speed"""
         return 0.8 #[IMPROVEMENT] Set as constant for now
         
-    def update(self, commanded_throttle, curr_velocity, single_wheel_normal_force_rear):
+    def update(self, commanded_throttle, curr_velocity, single_wheel_normal_force_rear, target_speed):
         """Function to update motor toque"""
         curr_rpm = curr_velocity * 60 / (math.pi * self.diam_wheel)
-        if commanded_throttle == 0: # Check for regen braking, use linear model 
-            self.torque = self.regen_gain * curr_rpm * self.num_motors
+        if commanded_throttle == 0: # Check for regen braking, use linear model
+            error = target_speed - curr_velocity
+            self.torque = self.regen_gain * error * self.num_motors
             self.power = (self.torque * curr_rpm * Motor.TO_RAD_PER_SECOND *
                           self.get_regen_efficiency(curr_rpm))
         else: 
@@ -293,9 +302,9 @@ class CarDynamics:
         self.curr_road_gradient = 0
         self.curr_motor_torque = 0
         self.curr_brake_torque = 0
-        self.curr_air_density = None
+        self.curr_air_density = 1.2
         self.timestep = timestep
-        self.normal_force_front = None
+        self.normal_force_front = (self.A_GRAVITY*mass/4.0)
         
     def get_air_density(self, elevation, temperature, humidity):
         # Funtion to determine air density based on temperature, pressure
@@ -346,9 +355,9 @@ class CarDynamics:
         """Function to return the normal force on each front wheel based on half car model"""
         motor_force = motor_torque / self.wheel_rad
         braking_force = brake_torque / self.wheel_rad
-        normal_force_front = ( (self.cog_height * (braking_force - motor_force)
-                            + self.wheelbase * self.mass * self.A_GRAVITY)
-                            / (self.acceleration[0] + self.wheelbase))          
+        self.normal_force_front = ( (self.cog_height * (braking_force - motor_force)
+                                     + self.wheelbase * self.mass * self.A_GRAVITY)
+                                     / (self.acceleration[0] + self.wheelbase))          
     
     def update(self, motor_torque, brake_torque, time, road_gradient, elevation, temperature, humidity):
         self.curr_road_gradient = road_gradient
@@ -367,13 +376,13 @@ class CarDynamics:
         # Differentiate to find average acceleration
         self.acceleration.append((self.velocity[1] - self.velocity[0]) / self.timestep)
         # Update front normal force (single wheel):
-        self.normal_force_front = self.get_front_normal_force(motor_torque, brake_torque)
+        # self.normal_force_front = self.get_front_normal_force(motor_torque, brake_torque)
     
 class Array:
     """Class for array block"""
     
     def __init__(self, area, efficiency):
-        self.power = NaN                 #current front array power produced, W
+        self.power = 0                   #current front array power produced, W
         self.area = area                 #area of array in m^2
         self.efficiency = efficiency
         
@@ -434,8 +443,8 @@ class Sunlight:
         return 0.271 - 0.294 * beam_transmission
     
     def get_total_irradiance(self, ang_of_incidence, zinuth, beam_transmission, diffuse_transmission, cloudienss, reflectance, gradient):
-        beam_irradiance = beam_transmission * self.SOLAR_CONST * cloudienss
-        diffuse_irradiance = diffuse_transmission * self.SOLAR_CONST * cosd(zinuth) * cloudienss
+        beam_irradiance = beam_transmission * self.SOLAR_CONST * (1-cloudienss)
+        diffuse_irradiance = diffuse_transmission * self.SOLAR_CONST * cosd(zinuth) * (1-cloudienss)
         slope = atand(gradient) * self.TO_DEGREES + self.array_angle
         return ( beam_irradiance * cosd(ang_of_incidence) * int(cosd(ang_of_incidence) > 0) +
                  diffuse_irradiance * (1 + cosd(slope))/2.0 +
@@ -449,22 +458,6 @@ class Sunlight:
         ang_of_incidence = self.get_angle_of_incidence(dclitn, position, hr_ang, azimuth, gradient, self.array_angle)
         beam_transmission = self.get_beam_transmission(elevation, zinuth)
         diffuse_transmission = self.get_diffuse_transmission(beam_transmission)
-        print
-        print"Declination:"
-        print dclitn
-        print"Hour Angle:"
-        print hr_ang
-        print"Azimuth:"
-        print azimuth
-        print"Zinuth:"
-        print zinuth
-        print"Angle of Incidence:"
-        print ang_of_incidence
-        print"Beam Transmission:"
-        print beam_transmission
-        print"Diffuse Transmission:"
-        print diffuse_transmission
-        print
         self.irradiance =  self.get_total_irradiance(ang_of_incidence,
                                                 zinuth, beam_transmission,
                                                 diffuse_transmission,
@@ -493,6 +486,7 @@ class VehicleLog:
 
     def __init__(self):
         self.date_time = []
+        self.elapsed_time = []
         self.position = []
         self.elevation = []
         self.heading = []
@@ -507,7 +501,7 @@ class VehicleLog:
         self.velocity = []
         self.acceleration = []
         self.front_irradiance = []
-        self.front_irradiance = []
+        self.rear_irradiance = []
         self.front_array_power = []
         self.rear_array_power = []
         self.hv_losses = []
@@ -516,47 +510,55 @@ class VehicleLog:
 class Vehicle:
     """Class to handle all highest level vehicle functions"""
     
-    TIMESTEP = 1                         #timestep for iterataive calcs, s
-    WAYPOINT_TOL = 50                    #tolerance for reaching waypoint, m
+    TIMESTEP = 0.1                        #timestep for iterataive calcs, s
+    WAYPOINT_TOL = 2.5                    #tolerance for reaching waypoint, m
     
-    def __init__(self, vehicle_params):
+    def __init__(self, vehicle_params, start_date_time, init_waypoint):
         self.params = vehicle_params
         
         # Vehicle level state variables
-        self.date_time = datetime()
-        self.position = Coordinate(NaN, NaN)  #current poition, deg
-        self.elevation = NaN                  #current elevation above sea level, m
-        self.heading = NaN                    #direction of travel, deg
-        self.gradient = NaN                   #slope of current gradient, rise/run
-        self.total_distance = NaN             #totat distance traveled, m
+        self.date_time = start_date_time
+        self.elapsed_time = 0
+        self.position = init_waypoint.coordinate #current poition, deg
+        self.elevation = init_waypoint.elevation #current elevation above sea level, m
+        self.heading = 0                         #direction of travel, deg
+        self.gradient = 0                        #slope of current gradient, rise/run
+        self.total_distance = 0                  #totat distance traveled, m
+        self.target_speed = None
+        self.cloudiness = None
+        self.temperature = None
+        self.reflectance = None
+        self.humidity = None
         
         # Classes that represent blocks in the system model. These blocks
         # contain and maipulate other state variables
-        self.prev_waypoint = Waypoint(NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN) # waypoint most recently passed
-        self.next_waypoint = Waypoint(NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN) # next waypoint to drive to
+        self.curr_waypoint = init_waypoint # waypoint most recently passed
+        self.next_waypoint = init_waypoint # next waypoint to drive to
         self.driver = Driver(self.params.driver_k_p,self.params.driver_k_d,
                              self.params.driver_k_i, Vehicle.TIMESTEP)           
         self.motor = Motor(self.params.mu_s_tire, self.params.mu_k_tire,
                            self.params.diam_wheel, self.params.stall_torque,
                            self.params.no_load_speed, self.params.regen_gain,
-                           self.num_motors)
+                           self.params.num_motors)
         self.mech_brakes = Brakes(self.params.mu_k_brakes, self.params.mu_s_tire,
                                   self.params.mu_k_tire, self.params.area_caliper_cyl,
                                   self.params.max_line_pressue, self.params.diam_brake_rotor,
                                   self.params.diam_wheel,
                                   self.params.num_calipers_per_wheel,
-                                  self.num_brake_wheels)
+                                  self.params.num_brake_wheels)
         self.car_dynamics = CarDynamics(self.params.mass, self.params.c_viscous,
                                         self.params.c_coulombic, self.params.c_drag,
                                         self.params.diam_wheel, self.params.j_wheel,
-                                        self.params.j_motor_rotor, Vehicle.TIMESTEP)
+                                        self.params.j_motor_rotor, Vehicle.TIMESTEP,
+                                        self.params.frontal_area, self.params.wheelbase,
+                                        self.params.cog_y)
         self.rear_array = Array(self.params.array_front_area,
                                 self.params.array_efficiency)
         self.front_array = Array(self.params.array_front_area,
                                  self.params.array_efficiency)
         self.front_sunlight = Sunlight(self.params.array_front_angle)
         self.rear_sunlight = Sunlight(self.params.array_rear_angle)
-        self.battery = Battery(Vehicle.TIMESTEP)
+        self.battery = Battery(Vehicle.TIMESTEP, self.params.initial_soc)
         self.lv_losses = LowVoltageLosses()
         self.hv_losses = HighVoltageLosses()
         
@@ -564,20 +566,21 @@ class Vehicle:
         self.log = VehicleLog()
         
     def log_datapoint(self):
-        self.log.date.append(self.date_time)
+        self.log.date_time.append(self.date_time)
+        self.log.elapsed_time.append(self.elapsed_time)
         self.log.position.append(self.position)
         self.log.elevation.append(self.elevation)
         self.log.heading.append(self.heading)
         self.log.gradient.append(self.gradient)
         self.log.total_distance.append(self.total_distance)
         self.log.battery_soc.append(self.battery.soc)
-        self.log.commaned_throttle.append(self.driver.commaned_throttle)
+        self.log.commaned_throttle.append(self.driver.commanded_throttle)
         self.log.brake_pedal_force.append(self.driver.brake_pedal_input)
         self.log.mech_brake_torque.append(self.mech_brakes.torque)
         self.log.motor_torque.append(self.motor.torque)
         self.log.motor_power.append(self.motor.power)
-        self.log.velocity.append(self.car_dynamics.velocity)
-        self.log.acceleration.append(self.car_dynamics.acceleration)
+        self.log.velocity.append(self.car_dynamics.velocity[1])
+        self.log.acceleration.append(self.car_dynamics.acceleration[1])
         self.log.front_irradiance.append(self.front_sunlight.irradiance)
         self.log.rear_irradiance.append(self.rear_sunlight.irradiance)
         self.log.front_array_power.append(self.front_array.power)
@@ -587,17 +590,23 @@ class Vehicle:
 
     def update_vehicle_state(self):
         """Function to..."""
-        self.sunlight.update(self.position, self.elevation, self.gradient,
-                             self.heading, self.date_time, self.cloudiness,
-                             self.reflectance)
-        self.front_array.update(self.sunlight.irradiance)
-        self.rear_array.update(self.sunlight.irradiance)
-        self.driver.update(self.car_dynamics.velocity,
-                           self.prev_waypoint.target_speed)
-        self.motor.update(self.driver.commanded_throttle)
+        self.front_sunlight.update(self.position, self.elevation, self.gradient,
+                                   self.heading, self.date_time, self.cloudiness,
+                                   self.reflectance)
+        self.rear_sunlight.update(self.position, self.elevation, self.gradient,
+                                  self.heading, self.date_time, self.cloudiness,
+                                  self.reflectance)
+        self.front_array.update(self.front_sunlight.irradiance)
+        self.rear_array.update(self.rear_sunlight.irradiance)
+        self.driver.update(self.car_dynamics.velocity[1],
+                           self.curr_waypoint.target_speed)
+        self.motor.update(self.driver.commanded_throttle, self.car_dynamics.velocity[1],
+                          self.car_dynamics.normal_force_front, self.curr_waypoint.target_speed)
         self.mech_brakes.update(self.driver.brake_pedal_input,
                                 self.car_dynamics.normal_force_front)
-        self.car_dynamics.update(self.motor.torque, self.mech_brakes.torque)
+        self.car_dynamics.update(self.motor.torque, self.mech_brakes.torque,
+                                 self.elapsed_time, self.gradient, self.elevation,
+                                 self.temperature, self.humidity)
         self.lv_losses.update()
         self.hv_losses.update()
         self.battery.update(self.motor.power, self.rear_array.power,
@@ -610,8 +619,8 @@ class Vehicle:
         reached the target waypoint within the given tolerance"""
         
         # Solve for original distance, heading and graident
-        dist_to_waypoint = self.position.get_distance_to(self.next_waypoint)
-        self.heading = self.position.get_direction_to(self.next_waypoint)
+        dist_to_waypoint = self.position.get_distance_to(self.next_waypoint.coordinate)
+        self.heading = self.position.get_direction_to(self.next_waypoint.coordinate)
         self.gradient = (self.next_waypoint.elevation - self.elevation) / dist_to_waypoint
         
         # Iterate untill below toelerance or distance to waypoint begins to increase
@@ -619,14 +628,72 @@ class Vehicle:
             self.update_vehicle_state()
             # Update distance traveled
             delta_distance = abs( self.car_dynamics.velocity[0] +
-                                  self.car_dynamics.velocity[1] ) * TIMESTEP / 2
+                                  self.car_dynamics.velocity[1] ) * self.TIMESTEP / 2
             self.total_distance += delta_distance
             # Update elevation 
             self.elevation += self.gradient * delta_distance            
             # Update time
-            self.date_time += timedelta(millisecond=(Vehicle.TIMESTEP*1000))
+            self.date_time += timedelta(milliseconds=(Vehicle.TIMESTEP*1000))
+            self.elapsed_time += Vehicle.TIMESTEP
             dist_to_waypoint -= delta_distance
-            log_datapoint()
+            self.log_datapoint()
+
+    def update_waypoints(self, new_waypoint_data):
+        self.curr_waypoint = self.next_waypoint
+        self.next_waypoint = Waypoint(new_waypoint_data)
+        # Update params based on next waypoint
+        self.position = self.curr_waypoint.coordinate
+        self.target_speed = self.curr_waypoint.target_speed
+        self.cloudiness = self.curr_waypoint.cloudiness
+        self.temperature = self.curr_waypoint.temperature
+        self.reflectance = self.curr_waypoint.reflectance
+        self.humidity = self.curr_waypoint.humidity
+
+class VehicleSimulation:
+    
+    def __init__(self, vehicle_params, waypoints_file_name):
+        waypoints_csv = open(waypoints_file_name, 'r')
+        self.csv_reader = csv.reader(waypoints_csv)
+        init_date_time_data = map(int, next(self.csv_reader))
+        init_waypoint = Waypoint(map(float, next(self.csv_reader)))
+        init_date_time = datetime(init_date_time_data[0], init_date_time_data[1],
+                                  init_date_time_data[2], init_date_time_data[3],
+                                  init_date_time_data[4], init_date_time_data[5])
+        self.vehicle = Vehicle(vehicle_params,init_date_time,init_waypoint)
+    
+    def run(self):
+        """Function to iteration across waypoints"""
+        for waypoint in self.csv_reader:
+            self.vehicle.update_waypoints(map(float,waypoint))
+            self.vehicle.drive_to_next_waypoint()
             
-        # Update position to be target waypoint once reached
-        self.position = self.next_waypoint.coordinate
+        plt.subplot(6, 1, 1)
+        plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.elevation,'-')
+        plt.title('Waterloo Loop Ouptuts 1')
+        plt.ylabel('Elevation (m)')
+        
+        plt.subplot(6, 1, 2)
+        plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.commaned_throttle, '-')
+        plt.ylabel('Throttle')
+        
+        plt.subplot(6, 1, 3)
+        plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.velocity, '-')
+        plt.plot([0,500], [14,14], '-')
+        plt.ylabel('Velocity (m/s)')
+        
+        plt.subplot(6, 1, 4)
+        plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.motor_power,'-')
+        plt.ylabel('Motor Power (W)')
+        
+        plt.subplot(6, 1, 5)
+        plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.rear_array_power, '-')
+        plt.ylabel('Rear Array Power (W)')
+        
+        plt.subplot(6, 1, 6)
+        plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.battery_soc, '-')
+        plt.xlabel('Time (s)')
+        plt.ylabel('Battery SOC (J)')
+        
+        plt.show()
+                
+        
