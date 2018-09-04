@@ -31,7 +31,7 @@ msxii = {
     # """Dimensions:"""
     "wheelbase": 2.6,           #wheelbase, meters
     "diam_wheel": 0.53,         #wheel diameter, meters
-    "frontal_area": 0.2,        #total frontal area, meters^2
+    "frontal_area": 2.0,        #total frontal area, meters^2
     
     # """Brakes:"""
     "area_caliper_cyl": 0.0006387084, #caliper cylinder area, meters^2,
@@ -45,7 +45,7 @@ msxii = {
     # """Driver:"""
     "driver_k_p": 1,
     "driver_k_d": 0,
-    "driver_k_i": .01,
+    "driver_k_i": 0,
     
     # """Motors:"""
     "stall_torque": 135,        #stall torque of motor, Nm
@@ -55,8 +55,8 @@ msxii = {
     
     # """Coefficients:"""
     "c_drag": 0.2,              #coeficient of drag, unitless
-    "c_coulombic": 0.2,         #coeficient of coulombic friction (for entire vehicle), unitless
-    "c_viscous": 0.2,           #coeficient of viscous damping (for entire vehicle), unitless
+    "c_coulombic": 0.3,         #coeficient of coulombic friction (for entire vehicle), unitless
+    "c_viscous": 0.3,           #coeficient of viscous damping (for entire vehicle), unitless
     "mu_s_tire": 0.7,           #tire coeficient of static frction, unitless
     "mu_k_tire": 0.6,           #tire coeficient of kinetic frction, unitless
 

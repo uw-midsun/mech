@@ -141,6 +141,6 @@ print test_sunlight.irradiance
 """Main"""
 print
 print "Main"
-test_waypoints_file = "test_waypoints2.csv"
+test_waypoints_file = "farson_arco.csv"
 test_sim  = VehicleSimulation(msxii_data, test_waypoints_file)
 test_sim.run()

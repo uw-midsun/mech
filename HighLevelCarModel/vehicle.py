@@ -24,6 +24,7 @@ import math
 import numpy
 import matplotlib.pyplot as plt
 import csv
+import pandas
 
 """Trig functions implemented for degrees"""
 def cosd(deg):
@@ -107,7 +108,7 @@ class Waypoint:
         # Order of inputs: lat, longi, elev, targ_vel, cloud, temp, reflect, humid
         self.coordinate = Coordinate(inputs[0], inputs[1])  #next waypoint poition, deg  
         self.elevation = inputs[2]                          #current elevation above sea level, m
-        self.target_speed = inputs[3]                    #intended velocity at waypoint, m/s
+        self.target_speed = inputs[3]                       #intended velocity at waypoint, m/s
         self.cloudiness = inputs[4]                         #factor of irradiance blocked by clouds, %
         self.temperature = inputs[5]                        #current temperature, degC
         self.reflectance = inputs[6]                        #current ground refectance, 
@@ -119,6 +120,7 @@ class Battery:
     def __init__(self, input_timestep, initial_soc):
         self.timestep = input_timestep
         self.soc = initial_soc           #current battery pack state of charge, J
+        self.total_consumption = 0
         self.net_power = [0, 0]          #fixed lenght FIFO with right side in, left side out
         
     def update(self, motor_power, rear_array_power, front_array_power,
@@ -130,11 +132,15 @@ class Battery:
         self.net_power.append(motor_power + rear_array_power +
                               front_array_power + lv_losses + hv_losses)
         # Integerate using trapazoidal rule
-        self.soc += ( (self.net_power[0] +
-                      self.net_power[1]) * self.timestep / 2.0 )
+        power_delta= ( (self.net_power[0] +
+                        self.net_power[1]) * self.timestep / 2.0 )
+        self.soc += power_delta
+        self.total_consumption += power_delta * -1.0
  
 class Driver:
     """Class for driver block"""
+    
+    MAX_DELTA_VELOCITY = 0.1
     
     def __init__(self, kP, kI, kD, timestep):
         self.kP = kP
@@ -146,14 +152,27 @@ class Driver:
         self.commanded_throttle = 0      #current commanded throttle, %
         self.brake_pedal_input = 0       #current brake pedal force, N
         self.control_signal = 0
+        self.prev_target_speed = 0
         
     def update(self, curr_velocity, target_speed):
         """Compuptes control signal and adjusts commended throttle and brake
         pedal input accordingly. Both are values from 0 to 1 represeting the
         amount the pedal is depressed. This will be mapped to torques in the
         brakes and motor classes"""
+        
         self.velocity_error.pop(0)
-        self.velocity_error.append(target_speed-curr_velocity)
+        
+        # Trapazoidal velocity profile:
+        if abs(target_speed-self.prev_target_speed) > self.MAX_DELTA_VELOCITY * 2.0:
+            if target_speed > self.prev_target_speed:
+                self.velocity_error.append(self.MAX_DELTA_VELOCITY)
+                self.prev_target_speed = target_speed + self.MAX_DELTA_VELOCITY
+            else:
+                self.velocity_error.append(-1.0 * self.MAX_DELTA_VELOCITY)
+                self.prev_target_speed = target_speed - self.MAX_DELTA_VELOCITY
+        else: 
+            self.velocity_error.append(target_speed-curr_velocity)
+            
         self.error_integrator += ( (self.velocity_error[0] +
                                    self.velocity_error[1]) * self.timestep / 2.0 )
 
@@ -196,7 +215,7 @@ class Brakes:
         """Function to map proportion of brake pedal stroke to line pressure.
         [IMPROVEMENT] Function has been left trivial for future improvments
         (perhaps brake pedal input maps to stroke instead of % of max pressure)"""
-        if brake_pedal_input < 0.3:
+        if brake_pedal_input < 0.2:
             brake_pedal_input = 0
         return brake_pedal_input * self.max_line_pressure
     
@@ -398,6 +417,7 @@ class Sunlight:
     def __init__(self, array_angle):
         self.irradiance = 0              #curent irradiance on car, W/m^2
         self.array_angle = array_angle   #angle of array with respect to horizontal
+        self.ang_of_incidence = 0
     
     def get_declination(self, date_time):
         # Implement's Spencer's equation for declination (1971)
@@ -426,7 +446,7 @@ class Sunlight:
     def get_angle_of_incidence(self, dclitn, position, hr_ang, azimuth, gradient, array_angle):
         # Uses formula from Solar Engineerin of Thermal Processes (2013) Duffie et al
         lat = position.latitude
-        slope = atand(gradient) * self.TO_DEGREES + array_angle
+        slope = atand(gradient) + array_angle
         return acosd( sind(dclitn) * sind(lat) * cosd(slope)
                - sind(dclitn) * cosd(lat) * sind(slope) * cosd(azimuth)
                + cosd(dclitn) * cosd(lat) * cosd(slope) * cosd(hr_ang)
@@ -445,20 +465,20 @@ class Sunlight:
     def get_total_irradiance(self, ang_of_incidence, zinuth, beam_transmission, diffuse_transmission, cloudienss, reflectance, gradient):
         beam_irradiance = beam_transmission * self.SOLAR_CONST * (1-cloudienss)
         diffuse_irradiance = diffuse_transmission * self.SOLAR_CONST * cosd(zinuth) * (1-cloudienss)
-        slope = atand(gradient) * self.TO_DEGREES + self.array_angle
+        slope = atand(gradient) + self.array_angle
         return ( beam_irradiance * cosd(ang_of_incidence) * int(cosd(ang_of_incidence) > 0) +
                  diffuse_irradiance * (1 + cosd(slope))/2.0 +
-                 (beam_irradiance + diffuse_irradiance) * reflectance * (1 - cosd(slope))/2 )
+                 (beam_irradiance + diffuse_irradiance) * reflectance * (1 - cosd(slope))/2.0 )
 
     def update(self, position, elevation, gradient, heading, date_time, cloudienss, reflectance):
         dclitn = self.get_declination(date_time)
         hr_ang = self.get_hour_angle(date_time)
         azimuth = self.get_surface_azimuth(heading)
         zinuth = self.get_zinuth(dclitn, position, hr_ang)
-        ang_of_incidence = self.get_angle_of_incidence(dclitn, position, hr_ang, azimuth, gradient, self.array_angle)
+        self.ang_of_incidence = self.get_angle_of_incidence(dclitn, position, hr_ang, azimuth, gradient, self.array_angle)
         beam_transmission = self.get_beam_transmission(elevation, zinuth)
         diffuse_transmission = self.get_diffuse_transmission(beam_transmission)
-        self.irradiance =  self.get_total_irradiance(ang_of_incidence,
+        self.irradiance =  self.get_total_irradiance(self.ang_of_incidence,
                                                 zinuth, beam_transmission,
                                                 diffuse_transmission,
                                                 cloudienss, reflectance, gradient)
@@ -498,14 +518,18 @@ class VehicleLog:
         self.mech_brake_torque = []
         self.motor_torque = []
         self.motor_power = []
+        self.net_power = []
         self.velocity = []
         self.acceleration = []
         self.front_irradiance = []
         self.rear_irradiance = []
         self.front_array_power = []
         self.rear_array_power = []
+        self.total_array_power = []
         self.hv_losses = []
         self.lv_losses = []
+        self.target_speed = []
+        self.total_consumption = []
         
 class Vehicle:
     """Class to handle all highest level vehicle functions"""
@@ -574,19 +598,27 @@ class Vehicle:
         self.log.gradient.append(self.gradient)
         self.log.total_distance.append(self.total_distance)
         self.log.battery_soc.append(self.battery.soc)
+        self.log.total_consumption.append(self.battery.total_consumption)
         self.log.commaned_throttle.append(self.driver.commanded_throttle)
         self.log.brake_pedal_force.append(self.driver.brake_pedal_input)
         self.log.mech_brake_torque.append(self.mech_brakes.torque)
         self.log.motor_torque.append(self.motor.torque)
         self.log.motor_power.append(self.motor.power)
+        self.log.net_power.append(self.battery.net_power[1])
         self.log.velocity.append(self.car_dynamics.velocity[1])
         self.log.acceleration.append(self.car_dynamics.acceleration[1])
         self.log.front_irradiance.append(self.front_sunlight.irradiance)
         self.log.rear_irradiance.append(self.rear_sunlight.irradiance)
         self.log.front_array_power.append(self.front_array.power)
         self.log.rear_array_power.append(self.rear_array.power)
+        self.log.total_array_power.append(self.rear_array.power + self.front_array.power)
         self.log.hv_losses.append(self.hv_losses.power)
         self.log.lv_losses.append(self.lv_losses.power)
+        self.log.target_speed.append(self.curr_waypoint.target_speed)
+        
+    def write_data_log(self, file_name):
+        df = pandas.DataFrame({"distance" : self.log.total_distance, "consumption" : self.log.battery_soc})
+        df.to_csv(file_name, index=False)
 
     def update_vehicle_state(self):
         """Function to..."""
@@ -667,32 +699,48 @@ class VehicleSimulation:
             self.vehicle.update_waypoints(map(float,waypoint))
             self.vehicle.drive_to_next_waypoint()
             
-        plt.subplot(6, 1, 1)
+        print "Trip finished at:"
+        print self.vehicle.log.date_time[-1]
+        self.vehicle.write_data_log("output_data.csv")
+            
+        plt.subplot(9, 1, 1)
         plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.elevation,'-')
         plt.title('Waterloo Loop Ouptuts 1')
         plt.ylabel('Elevation (m)')
         
-        plt.subplot(6, 1, 2)
+        plt.subplot(9, 1, 2)
         plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.commaned_throttle, '-')
         plt.ylabel('Throttle')
         
-        plt.subplot(6, 1, 3)
+        plt.subplot(9, 1, 3)
         plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.velocity, '-')
-        plt.plot([0,500], [14,14], '-')
+        plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.target_speed,'-')
         plt.ylabel('Velocity (m/s)')
         
-        plt.subplot(6, 1, 4)
-        plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.motor_power,'-')
-        plt.ylabel('Motor Power (W)')
+        plt.subplot(9, 1, 4)
+        plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.net_power,'-')
+        plt.ylabel('Net Power (W)')
         
-        plt.subplot(6, 1, 5)
-        plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.rear_array_power, '-')
-        plt.ylabel('Rear Array Power (W)')
+        plt.subplot(9, 1, 5)
+        plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.total_array_power, '-')
+        plt.ylabel('Total Array Power (W)')
         
-        plt.subplot(6, 1, 6)
+        plt.subplot(9, 1, 6)
         plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.battery_soc, '-')
-        plt.xlabel('Time (s)')
         plt.ylabel('Battery SOC (J)')
+        
+        plt.subplot(9, 1, 7)
+        plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.total_distance, '-')
+        plt.ylabel('Total Distance (m)')
+        
+        plt.subplot(9, 1, 8)
+        plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.heading, '-')
+        plt.ylabel('Heading ()')
+        
+        plt.subplot(9, 1, 9)
+        plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.gradient, '-')
+        plt.xlabel('Time (s)')
+        plt.ylabel('Gradient ()')
         
         plt.show()
                 
