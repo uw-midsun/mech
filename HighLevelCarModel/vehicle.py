@@ -457,6 +457,7 @@ class Sunlight:
         a0 = 0.4237 - 0.00821 * ( 6 - (elevation/1000) )**2
         a1 = 0.5055 + 0.00595 * ( 6.5 - (elevation/1000) )**2
         k = 0.2711 + 0.01858 * ( 2.5 - (elevation/1000) )**2
+        print a0 + a1 * math.exp( -k / cosd(zinuth) )
         return a0 + a1 * math.exp( -k / cosd(zinuth) )
     
     def get_diffuse_transmission(self, beam_transmission):
@@ -703,44 +704,77 @@ class VehicleSimulation:
         print self.vehicle.log.date_time[-1]
         self.vehicle.write_data_log("output_data.csv")
             
-        plt.subplot(9, 1, 1)
+        # plt.subplot(9, 1, 1)
+        # plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.elevation,'-')
+        # plt.title('Waterloo Loop Ouptuts 1')
+        # plt.ylabel('Elevation (m)')
+        # 
+        # plt.subplot(9, 1, 2)
+        # plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.commaned_throttle, '-')
+        # plt.ylabel('Throttle')
+        # 
+        # plt.subplot(9, 1, 3)
+        # plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.velocity, '-')
+        # plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.target_speed,'-')
+        # plt.ylabel('Velocity (m/s)')
+        # 
+        # plt.subplot(9, 1, 4)
+        # plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.net_power,'-')
+        # plt.ylabel('Net Power (W)')
+        # 
+        # plt.subplot(9, 1, 5)
+        # plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.total_array_power, '-')
+        # plt.ylabel('Total Array Power (W)')
+        # 
+        # plt.subplot(9, 1, 6)
+        # plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.battery_soc, '-')
+        # plt.ylabel('Battery SOC (J)')
+        # 
+        # plt.subplot(9, 1, 7)
+        # plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.total_distance, '-')
+        # plt.ylabel('Total Distance (m)')
+        # 
+        # plt.subplot(9, 1, 8) 
+        # plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.heading, '-')
+        # plt.ylabel('Heading ()')
+        # 
+        # plt.subplot(9, 1, 9)
+        # plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.gradient, '-')
+        # plt.xlabel('Time (s)')
+        # plt.ylabel('Gradient ()')
+        # 
+        # plt.show()
+        print "front"
+        print numpy.mean(self.vehicle.log.front_irradiance)
+        print "rear"
+        print numpy.mean(self.vehicle.log.rear_irradiance)
+        
+        plt.subplot(6, 1, 1)
         plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.elevation,'-')
-        plt.title('Waterloo Loop Ouptuts 1')
+        plt.title('Simulation Outputs: Montpellier to Arco')
         plt.ylabel('Elevation (m)')
         
-        plt.subplot(9, 1, 2)
-        plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.commaned_throttle, '-')
-        plt.ylabel('Throttle')
-        
-        plt.subplot(9, 1, 3)
+        plt.subplot(6, 1, 2)
         plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.velocity, '-')
         plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.target_speed,'-')
         plt.ylabel('Velocity (m/s)')
         
-        plt.subplot(9, 1, 4)
+        plt.subplot(6, 1, 3)
         plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.net_power,'-')
         plt.ylabel('Net Power (W)')
         
-        plt.subplot(9, 1, 5)
-        plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.total_array_power, '-')
-        plt.ylabel('Total Array Power (W)')
-        
-        plt.subplot(9, 1, 6)
+        plt.subplot(6, 1, 4)
         plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.battery_soc, '-')
         plt.ylabel('Battery SOC (J)')
         
-        plt.subplot(9, 1, 7)
+        plt.subplot(6, 1, 5)
         plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.total_distance, '-')
-        plt.ylabel('Total Distance (m)')
+        plt.ylabel('Distance (m)')
         
-        plt.subplot(9, 1, 8)
+        plt.subplot(6, 1, 6)
         plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.heading, '-')
-        plt.ylabel('Heading ()')
-        
-        plt.subplot(9, 1, 9)
-        plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.gradient, '-')
+        plt.ylabel('Heading (deg)')
         plt.xlabel('Time (s)')
-        plt.ylabel('Gradient ()')
         
         plt.show()
                 
