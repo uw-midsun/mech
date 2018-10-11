@@ -457,7 +457,6 @@ class Sunlight:
         a0 = 0.4237 - 0.00821 * ( 6 - (elevation/1000) )**2
         a1 = 0.5055 + 0.00595 * ( 6.5 - (elevation/1000) )**2
         k = 0.2711 + 0.01858 * ( 2.5 - (elevation/1000) )**2
-        print a0 + a1 * math.exp( -k / cosd(zinuth) )
         return a0 + a1 * math.exp( -k / cosd(zinuth) )
     
     def get_diffuse_transmission(self, beam_transmission):
@@ -744,10 +743,6 @@ class VehicleSimulation:
         # plt.ylabel('Gradient ()')
         # 
         # plt.show()
-        print "front"
-        print numpy.mean(self.vehicle.log.front_irradiance)
-        print "rear"
-        print numpy.mean(self.vehicle.log.rear_irradiance)
         
         plt.subplot(6, 1, 1)
         plt.plot(self.vehicle.log.elapsed_time, self.vehicle.log.elevation,'-')
