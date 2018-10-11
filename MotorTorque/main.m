@@ -33,7 +33,7 @@ rho = 1.225;    % Density of air (kg/m^3)
 g = 9.81;       % Acceleration of gravity (m/s^2)
 
 % ------------------------------ Variables ---------------------------- %
-x
+
 a = [0:.5:2.5];                      % Acceleration in m/s^2
 v = [0:.1:33.33];                    % Velocity in m/s
 incline = [0, 5,10];            % Incline in %
