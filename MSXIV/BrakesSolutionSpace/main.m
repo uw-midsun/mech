@@ -44,10 +44,10 @@ Nf = (((Mass * 9.81 * (Length - a)) + (Mass * Dc * h))/Length)/1000
  
 n = 10;
 m = .25;
-o =10;
+% o =10;
 
 
-[xx,yy,zz] = meshgrid(0:n:800,0:m:2.25,-100:o:100);
-
-xx = Mass;
-yy = a; 
+% % [xx,yy,zz] = meshgrid(0:n:800,0:m:2.25);
+% 
+% xx = Mass;
+% yy = a; 
