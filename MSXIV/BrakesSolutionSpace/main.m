@@ -16,38 +16,47 @@
 %       Time: seconds
 %       Angles: degrees
 %
-% ---------------------------------------------------------------------- %
 
-Length = 0; % Length of wheelbase 
-a = 0; % Distance of Center of Gravity from front wheel
-Mass = 0; % Mass of car
-Nf = 0; % Normal reaction force of front wheels
-Nr = 0; % Normal reaction force of rear wheels 
-Dc = 0; % Deceleration of car 
-t= 0; % Braking time of car 
-h = 0; % Distance between ground and Center of Gravity 
- 
- 
+% --------------------------- Constants -------------------------------- %
+
 % For this case, we assume Length = 2.25 m, Dc = -4.47, t = 3 
 
-Length = 2.25;
-Dc = -4.47;
-time  = 3;
-h = 1.5;
+Length = 2.25;          % Length of wheelbase
+Dc = -4.47;             % Deceleration of car
+T  = 3;                 % Braking time of car 
+H = 1.5;                % Distance between ground and Center of Gravity 
+k = 1;                  % Counter for  loop
 
+% --------------------------- Variables -------------------------------- %
 
-syms Mass Nf Nr
-Nr = ((Mass * 9.81) - Nf) /1000
+Mass2= zeros(1,40500);
+A2= zeros(1,40500);
+Nf= zeros(1,40500);     % Normal reaction force of front wheels
+Nr = 0;                 % Normal reaction force of rear wheels 
+               
 
  
-Nf = (((Mass * 9.81 * (Length - a)) + (Mass * Dc * h))/Length)/1000
- 
-n = 10;
-m = .25;
-% o =10;
+% Populating Nf values for all possilbe combinations of weight and alpha
 
+for Mass = 700: 1: 900
 
-% % [xx,yy,zz] = meshgrid(0:n:800,0:m:2.25);
-% 
-% xx = Mass;
-% yy = a; 
+   for A= 0.1: 0.00825 : 1.75
+Nf(k) = (((Mass* 9.81 * (Length - A ))+(Mass * Dc * H)) / Length)/1000;
+Mass2(k)= Mass;
+A2(k)= A;
+k = k +1;
+  end
+
+end
+
+% Plot for feasible space
+
+figure
+plot3(A2, Mass2, Nf)
+xlabel({'Distance of COG from front wheels, A','(Meters)'},'Color','r')
+ylabel({'Mass of Vehicle','(Kilograms)'},'Color','r')
+zlabel({'Normal Force of Front Wheels','(Kilonewtons)'},'Color','r')
+grid on
+yticks(0:100:1000)
+xticks(0:.25:2)
+zticks(-2:1:6)
