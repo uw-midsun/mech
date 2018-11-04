@@ -51,12 +51,29 @@ end
 
 % Plot for feasible space
 
-figure
-plot3(A2, Mass2, Nf)
-xlabel({'Distance of COG from front wheels, A','(Meters)'},'Color','r')
-ylabel({'Mass of Vehicle','(Kilograms)'},'Color','r')
-zlabel({'Normal Force of Front Wheels','(Kilonewtons)'},'Color','r')
+
+subplot(2,1,1)
+plot3(A2, (Mass2*.7), Nf)
+
+title('CoM Solution Space \it(\mu = 0.7 (dry road), regular wheel)')
+xlabel({'CoM Position','(m)'},'Color','r')
+ylabel({'Total mass of car','(kg)'},'Color','r')
+zlabel({'Braking Force on Front Wheels','(kN)'},'Color','r')
 grid on
+grid minor
+yticks(0:100:1000)
+xticks(0:.25:2)
+zticks(-2:1:6)
+
+subplot(2,1,2)
+plot3(A2, (Mass2*.4), Nf)
+
+title('CoM Solution Space \it(\mu = 0.4 (wet road), regular wheel)')
+xlabel({'CoM Position','(m)'},'Color','r')
+ylabel({'Total mass of car','(kg)'},'Color','r')
+zlabel({'Braking Force on Front Wheels','(kN)'},'Color','r')
+grid on
+grid minor
 yticks(0:100:1000)
 xticks(0:.25:2)
 zticks(-2:1:6)
