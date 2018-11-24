@@ -51,6 +51,12 @@ end
 
         
 plot3(A1,A2,Fbf)
+title('CoM Solution Space \it(\mu = 0.4 (wet road), regular wheel)')
+xlabel({'CoM Position','(m)'},'Color','r')
+ylabel({'Deceleration','(ms^2)'},'Color','r')
+zlabel({'Braking Force on Front Wheels','(kN)'},'Color','r')
+grid on
+grid minor
 
 
 
