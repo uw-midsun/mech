@@ -40,7 +40,7 @@ A1 = zeros(1,40500);     % position of COM
  
 %Fbf = u*(((m*g*A1)+(m*A2*H))/L);
 
-for a = -4: 0.125: -10
+for a = -4: -0.125: -10
     for alpha = 0: 0.1: 2.25
         Fbf(k) = u*(((m*g*alpha)+(m*a*H))/L);
         A2(k)= a;
