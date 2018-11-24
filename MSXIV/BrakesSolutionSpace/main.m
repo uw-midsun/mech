@@ -32,17 +32,17 @@ g = 9.8;                % gravity
 
 % --------------------------- Variables -------------------------------- %
 
-A2= zeros(1,40500);     % Deceleration 
-Fbf= zeros(1,40500);    % Normal reaction force of front wheels
-A1= zeros(1,40500);     % position of COM 
+A2 = zeros(1,40500);     % Deceleration 
+Fbf = zeros(1,40500);    % Normal reaction force of front wheels
+A1 = zeros(1,40500);     % position of COM 
                
 %Cycle through FBF at various decelerations to determine COM positions
  
 %Fbf = u*(((m*g*A1)+(m*A2*H))/L);
 
-for a = -4:0.125:-10
-    for alpha = 0:0.1:2.25
-        Fbf(k) = u*(((m*g*A1)+(m*A2*H))/L);
+for a = -4: 0.125: -10
+    for alpha = 0: 0.1: 2.25
+        Fbf(k) = u*(((m*g*alpha)+(m*a*H))/L);
         A2(k)= a;
         A1(k)= alpha;
         k= k+1;
@@ -50,7 +50,7 @@ for a = -4:0.125:-10
 end 
 
         
-plot3(Fbf,A1,A2);
+plot3(A1,A2,Fbf)
 
 
 
